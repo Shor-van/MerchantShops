@@ -1,0 +1,8 @@
+name: MerchantShops
+main: github.shor_van.merchantshops.MerchantShops
+version: 0.1.10a b56 (1.13.1)
+api-version: 1.13
+commands:
+    shop:
+        description: main command to modify the shops.
+        usage: /<shop> <addmerchant|removemerchant|merchant|listmerchants|help>

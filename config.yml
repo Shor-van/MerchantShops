@@ -1,0 +1,244 @@
+shops-data:
+    merchant-0:
+        name: "&6Testman's Tests!"
+        position:
+            world: SMP World
+            x: 244.5
+            y: 70
+            z: 32.5
+            pitch: 0.0
+            yaw: 0.0
+        sells:
+            item-0:
+                item-key: diamond_sword
+                damage: 0
+                amount: 1
+                level-cost: 1000000
+                display-name: "&6Shadow Light"
+                lore:
+                    - "A dwarven runeblade forged by"
+                    - "the breath of the dragon Navrohs."
+                enchants:
+                    - "sharpness 8246"
+                    - "smite 8246"
+                    - "sweeping 8246"
+                    - "fire_aspect 8246"
+                    - "bane_of_arthropods 8246"
+                    - "unbreaking 8246"
+                    - "mending 8246"
+                    - "vanishing_curse 8246"
+            item-1:
+                item-key: trident
+                damage: 0
+                amount: 1
+                level-cost: 1000000
+                display-name: "&4Navrohs's Fury"
+                lore:
+                    - "The physical embodiment of Navrohs's"
+                    - "unending rage."
+                enchants:
+                    - "smite 8246"
+                    - "sharpness 8246"
+                    - "power 8246"
+                    - "loyalty 8246"
+                    - "impaling 8246"
+                    - "channeling 8246"
+                    - "unbreaking 8246"
+                    - "vanishing_curse 8246"
+                    - "knockback 100"
+                    - "mending 8246"
+            item-2:
+                item-key: player_head
+                damage: 0
+                amount: 1
+                level-cost: 60
+                display-name: "Donut (Pink)"
+                skull-owner: b48503a4-6dec-438c-a3bc-6b5da7fb1fde
+                skull-texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODM3YzliODJiMTg2NjU2ZTlmNjM2M2EyYTFjNmE0YjViOTNjZmE5ZWY0ZGFkNmYxNmI5NGViYjVlMzYyNjc4In19fQ==
+                lore:
+                    - "The perfect donut? is the such a thing?"
+                    - "only legends, and tall tales surly!"
+            item-3:
+                item-key: player_head
+                damage: 0
+                amount: 1
+                level-cost: 60
+                display-name: "Donut (Chocolate)"
+                skull-owner: 5d575b44-c199-40a9-8a75-e3cb6c3d7202
+                skull-texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTlkYTU0ZmYzNjZlNzM4ZTMxZGU5MjkxOTk4NmFiYjRkNTBjYTk0NGZhOTkyNmFmNjM3NThiNzQ0OGYxOCJ9fX0=
+                lore:
+                    - "Yeah there is something strange."
+            item-4:
+                item-key: player_head
+                damage: 0
+                amount: 1
+                level-cost: 60
+                display-name: "Navrohs's head"
+                skull-owner: 67308976-98af-4d3d-9aa7-af0a984115f5
+                lore:
+                    - "Oh my the head of a void dragon."
+            item-5:
+                item-key: red_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-6:
+                item-key: terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-7:
+                item-key: orange_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-8:
+                item-key: yellow_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-9:
+                item-key: lime_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-10:
+                item-key: green_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-11:
+                item-key: cyan_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-12:
+                item-key: light_blue_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-13:
+                item-key: blue_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-14:
+                item-key: purple_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-15:
+                item-key: magenta_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-16:
+                item-key: pink_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-17:
+                item-key: black_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-18:
+                item-key: brown_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-19:
+                item-key: gray_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-20:
+                item-key: light_gray_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-21:
+                item-key: white_terracotta
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-22:
+                item-key: red_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-23:
+                item-key: orange_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-24:
+                item-key: yellow_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-25:
+                item-key: lime_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-26:
+                item-key: green_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-27:
+                item-key: cyan_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-28:
+                item-key: light_blue_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-29:
+                item-key: blue_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-30:
+                item-key: purple_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-31:
+                item-key: magenta_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-32:
+                item-key: pink_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-33:
+                item-key: black_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-34:
+                item-key: brown_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-35:
+                item-key: gray_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-36:
+                item-key: light_gray_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
+            item-37:
+                item-key: white_concrete
+                damage: 0
+                amount: 64
+                level-cost: 10
