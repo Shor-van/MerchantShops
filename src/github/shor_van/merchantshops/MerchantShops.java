@@ -29,6 +29,7 @@ public class MerchantShops extends JavaPlugin
 	private List<Merchant> merchants; //the list of merchants
 	
 	@Override
+    /**initiates the plugin*/
 	public void onEnable()
 	{
 		//config load
