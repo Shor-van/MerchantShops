@@ -19,17 +19,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+/**The main class for the plugin*/
 public class MerchantShops extends JavaPlugin
 {
-	public static final EntityType merchantEntityType = EntityType.VILLAGER;
+	public static final EntityType merchantEntityType = EntityType.VILLAGER; //The entity type used by the merchants
 	
 	private CommandHandler cmdHandler; //command handler for the plugin
 	private EventListener eventListener; //the event listener of the plugin
 	
 	private List<Merchant> merchants; //the list of merchants
 	
+    /**Initiates the plugin*/
 	@Override
-    /**initiates the plugin*/
 	public void onEnable()
 	{
 		//config load
@@ -50,6 +51,7 @@ public class MerchantShops extends JavaPlugin
 		loadMerchants();
 	}
 	
+	/**Disables the plugin.*/
 	@Override
 	public void onDisable()
 	{
@@ -64,9 +66,7 @@ public class MerchantShops extends JavaPlugin
 		merchants = null;
 	}
 	
-    /**
-     * Loads the merchant data from the config file
-     */
+    /**Loads the merchant data from the config file*/
 	@SuppressWarnings("unchecked")
 	private void loadMerchants()
 	{
@@ -173,9 +173,7 @@ public class MerchantShops extends JavaPlugin
 		this.getLogger().info("Completed, " + loaded + " merchants loaded.");
 	}
 	
-    /**
-     * Saves the merchant data to the config file
-     */
+    /**Saves the merchant data to the config file*/
 	public void saveMerchants()
 	{
 		//create merchants section
@@ -234,11 +232,8 @@ public class MerchantShops extends JavaPlugin
 		this.saveConfig();
 	}
 	
-    /**
-     * Gets the list of active merchants
-     * 
-     * @return the list of merchants
-     */
+    /**Gets the list of active merchants
+     * @return the list of merchants*/
 	public void createNewMerchant(Location location, String displayName)
 	{
 		Entity merchantEntity = location.getWorld().spawnEntity(location, merchantEntityType);
@@ -254,11 +249,8 @@ public class MerchantShops extends JavaPlugin
 		saveMerchants();
 	}
 	
-    /**
-     * Gets the list of active merchants
-     * 
-     * @return the list of merchants
-     */
+    /**Gets the list of active merchants
+     * @return the list of merchants*/
 	public Merchant getMerchant(int index)
 	{
 		if(index >= 0 && index < merchants.size())
@@ -266,21 +258,16 @@ public class MerchantShops extends JavaPlugin
 		return null;
 	}
 	
-    /**
-     * Gets the list of active merchants
-     * 
-     * @return the list of merchants
-     */
+    /**Gets the list of active merchants
+     * @return the list of merchants*/
 	public List<Merchant> getMerchants() { return merchants; }
 	
-    /**
-     * Applies a texture-url to a playerhead's meta.
+    /**Applies a texture-url to a playerhead's meta.
      * @param headMeta The SkullMeta associated with the playerhead to modify
      * @param uuid A UUID to associate with the head and texture
      * @param texture The Base64-encoded Texture-URL tags.
      * @return true: the information was properly set on the playerhead; false: there was an error setting the profile field.
-     * @author x7aSv
-     */
+     * @author x7aSv*/
     public static boolean applyTexture(SkullMeta headMeta, UUID uuid, String texture)
     {
         GameProfile profile = new GameProfile(uuid, null);

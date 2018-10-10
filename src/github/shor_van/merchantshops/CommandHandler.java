@@ -15,15 +15,23 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**Handles the /shop command for the merchant shops plugin*/
 public class CommandHandler implements CommandExecutor, TabCompleter
 {
-	private final JavaPlugin plugin;
+	private final JavaPlugin plugin; //The plugin
 	
+	/**Creates a new instance of the command handler, there should only be one
+     * @param plugin the plugin, this should be of type MerchantShops*/
 	public CommandHandler(JavaPlugin plugin)
 	{
 		this.plugin = plugin;
 	}
 	
+	/**Handles the /shop command, triggered when the /shop command is sent to the server
+     * @param sender the CommandSender object that sent the command
+     * @param cmd the command that was sent, in this case it should only be /shop
+	 * @param label the CommandSender object that sent the command
+	 * @param args the arguments that the user sent with the command*/
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) 
 	{
@@ -392,6 +400,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter
 		return false;
 	}
 	
+	/**Handles tab completion of the /shop command
+     * @param sender the CommandSender object that sent the command
+     * @param cmd the command that was sent, in thiis case it should only be /shop
+	 * @param alias the CommandSender object that sent the command
+	 * @param args the arguments that the user sent with the command*/
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
 	{

@@ -18,17 +18,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+/**Represents a merchant*/
 public class Merchant
 {
-	public static final int displaySize = 27;
-	public static final Material buttonMaterial = Material.SPECTRAL_ARROW;
-	public static final String prevPageLoreToken = "Go to the back page";
-	public static final String nextPageLoreToken = "Go to the next page";
+	public static final int displaySize = 27; //The max amount of items items to show if we would go over the max size of the inventory
+	public static final Material buttonMaterial = Material.SPECTRAL_ARROW; //The material of the item use by the navigation buttons
+	public static final String prevPageLoreToken = "Go to the back page"; //The lore line used by the prev page navigation button
+	public static final String nextPageLoreToken = "Go to the next page"; //The lore line used by the next page navigation button
 	
-	private UUID entityUUID;
-	private Location location;
-	private List<BuyableItem> sellItems;
+	private UUID entityUUID; //The UUID of the merchant entity
+	private Location location; //The location of the merchant entity
+	private List<BuyableItem> sellItems; //The items that the merchant sells
 	
+    /**Creats a new merchant instance
+     * @param entityUUID the UUID of the entity that physical represents the merchant in the world
+     * @param location the location of the entity
+     * @param sellItems the list of items that the merchant sells*/
 	public Merchant(UUID entityUUID, Location location, List<BuyableItem> sellItems)
 	{
 		this.entityUUID = entityUUID;
@@ -36,12 +41,9 @@ public class Merchant
 		this.location = location;
 	}
 	
-    /**
-     * Shows the specified player up to 36 of the merchant's items, starting from specified item index
-     * 
+    /**Shows the specified player up to 36 of the merchant's items, starting from specified item index
      * @param player the player to whom to show the inventory
-     * @param startIdx the item index at witch to start the item list from
-     */
+     * @param startIdx the item index at witch to start the item list from*/
 	@SuppressWarnings("deprecation")
 	public void showBuyMenu(Player player, int startIdx)
 	{
@@ -198,11 +200,9 @@ public class Merchant
 			chunk.unload(true);
 	}
 	
-    /**
-     * Sets the merchant's location to the specified location. Do not use Entity.teleport(location) as we need to update the merchants location in this object
-     * 
+    /**Sets the merchant's location to the specified location. Do not use Entity.teleport(location) as we need to update the merchants location in this object
      * @param location the new location of the merchant
-     */
+     * @return true if the location of the merchant entity was modified else if it failed returns false*/
 	public boolean setLocation(Location location)
 	{
 		//if not loaded load chunk
@@ -232,24 +232,15 @@ public class Merchant
 		return true;
 	}
 	
-    /**
-     * Gets the merchant entity's UUID
-     * 
-     * @return the physical entity's UUID
-     */
+    /**Gets the merchant entity's UUID
+     * @return the physical entity's UUID*/
 	public UUID getMerchantEntityUUID() { return entityUUID; }
 	
-    /**
-     * Gets the merchant entity
-     * 
-     * @return the merchant entity
-     */
+    /**Gets the merchant entity
+     * @return the merchant entity*/
 	public Entity getMerchantEntity() { return Bukkit.getEntity(entityUUID); }
 	
-	/**
-     * Gets the list of all items that the merchant is selling
-     * 
-     * @return a List containing all the items that the merchant is selling
-     */
+	/**Gets the list of all items that the merchant is selling
+     * @return a List containing all the items that the merchant is selling*/
 	public List<BuyableItem> getItemsForSale() { return sellItems; }
 }

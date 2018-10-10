@@ -22,15 +22,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**Listens for game events to trigger*/
 public class EventListener implements Listener
 {	
-	private final JavaPlugin plugin;
+	private final JavaPlugin plugin; //the plugin
 	
 	public EventListener(JavaPlugin plugin)
 	{
 		this.plugin = plugin;
 	}
 	
+	/**Triggered when a player right clicks on a entity
+     * @param event the PlayerInteractEntityEvent that was triggered*/
 	@EventHandler(priority=EventPriority.HIGH)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
 	{
@@ -46,6 +49,8 @@ public class EventListener implements Listener
 		}
 	}
 	
+	/**Triggered when a player clicks in a inventory
+     * @param event the InventoryClickEvent that was triggered*/
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority=EventPriority.HIGH)
 	public void onInventoryClick(InventoryClickEvent event)
