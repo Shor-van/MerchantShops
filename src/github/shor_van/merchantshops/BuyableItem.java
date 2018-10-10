@@ -63,7 +63,7 @@ public class BuyableItem
     public void setEnchantLevel(int index, int level)
     {
         if(index < 0 || index >= enchants.size())
-            throw new IllegalArgumentException("The index is out of range to the enchants list");
+            throw new IllegalArgumentException("The index is out of range in enchants list");
         
         String enchantKey = enchants.get(index).split(" ")[0];
         enchants.set(index, enchantKey + " " + level);
@@ -74,7 +74,7 @@ public class BuyableItem
     public void removeEnchant(int index)
     {
         if(index < 0 || index >= enchants.size())
-            throw new IllegalArgumentException("The index is out of range to the enchants list");
+            throw new IllegalArgumentException("The index is out of range in the enchants list");
         
         enchants.remove(index);
     }
