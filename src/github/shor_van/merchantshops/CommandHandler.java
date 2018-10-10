@@ -478,6 +478,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             String[] loreLines = args[5].split(":");
                                             for(String loreLine : loreLines)
                                                 buyableItem.getLore().add(loreLine.replace("_", " "));
+                                            ((MerchantShops) plugin).saveMerchants();
                                             
                                             sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") lore has changed");
                                             return true;
@@ -513,6 +514,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                         }
                                                         
                                                         buyableItem.addEnchant(enchantKey, level);
+                                                        ((MerchantShops) plugin).saveMerchants();
                                                             
                                                         sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " has been to item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId);
                                                         return true;
@@ -538,6 +540,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                     if(idx != -1)
                                                     {
                                                         buyableItem.removeEnchant(idx);
+                                                        ((MerchantShops) plugin).saveMerchants();
+                                                        
                                                         sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " has been removed");
                                                         return true;
                                                     }
@@ -571,6 +575,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                         }
                                                         
                                                         buyableItem.setEnchantLevel(idx, level);;
+                                                        ((MerchantShops) plugin).saveMerchants();
                                                        
                                                         sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " level set tp " + ChatColor.AQUA);
                                                         return true;
