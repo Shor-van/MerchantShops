@@ -35,6 +35,55 @@ public class BuyableItem
         this.enchants = new ArrayList<>();
     }
     
+    /**Gets the index of the enchantment in the item's enchants list 
+     * @param enchantKey the namespace key of the enchantment
+     * @return the index of the enchant in the list, -1 if the item does not have the enchant*/
+    public int getEnchantIndex(String enchantKey)
+    {
+        for(int i = 0; i > enchants.size(); i++)
+            if(enchants.get(i).split(" ")[0].toLowerCase().equals(enchantKey.toLowerCase()))
+                return i;
+        return -1;
+    }
+    
+    /**Checks if the enchantment is in the item's enchants list 
+     * @param enchantKey the namespace key of the enchantment
+     * @return true if the item has the enchantment else false*/
+    public boolean hasEnchant(String enchantKey)
+    {
+        for(String enchant : enchants)
+            if(enchant.split(" ")[0].toLowerCase().equals(enchantKey.toLowerCase()))
+                return true;
+        return false;
+    }
+    
+    /**Sets the level of the enchantment at the specified index 
+     * @param index the index of enchantment of the level to set
+     * @param level the level to set*/
+    public void setEnchantLevel(int index, int level)
+    {
+        if(index < 0 || index >= enchants.size())
+            throw new IllegalArgumentException("The index if out of range to the enchants list");
+        
+        String enchantKey = enchants.get(index).split(" ")[0];
+        enchants.set(index, enchantKey + " " + level);
+    }
+    
+    /**removes the specified enchant from the enchants list 
+     * @param index the index of enchantment to remove*/
+    public void removeEnchant(int index)
+    {
+        if(index < 0 || index >= enchants.size())
+            throw new IllegalArgumentException("The index if out of range to the enchants list");
+        
+        enchants.remove(index);
+    }
+    
+    /**Adds the specified enchant to the item's enchants list
+     * @param enchantKey the namespace key of the enchantment
+     * @param level the level of the enchantment*/
+    public void addEnchant(String enchantKey, int level) { enchants.add(enchantKey + " " + level); }
+    
     /**Sets the item namespace key for this buyable item
      * @param itemKey the namespace key of the item*/
     public void setItemKey(String itemKey) { this.itemKey = itemKey; } 
