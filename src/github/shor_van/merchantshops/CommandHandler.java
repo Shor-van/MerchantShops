@@ -12,6 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -72,7 +73,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     
                                     location = new Location(playerSender.getWorld(), posX, posY, posZ, yaw, pitch);
 
-                                } catch (IllegalArgumentException e) {
+                                } catch (NumberFormatException e) {
                                     playerSender.sendMessage(ChatColor.RED + "Invalid position data given!");
                                     return true;
                                 }
@@ -124,12 +125,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     return true;
                                 }
                                 
-                            } catch(Exception e) {
+                            } catch(NumberFormatException e) {
                                 sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
                                 return true;
                             }
                             
-                            sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchant.getMerchantEntity().getCustomName() + ChatColor.GOLD + "(" + ChatColor.AQUA + id + ChatColor.GOLD + ") has been removed.");
+                            sender.sendMessage(ChatColor.GOLD + "Merchant: " + "(" + ChatColor.AQUA + id + ChatColor.GOLD + ") has been removed.");
                             ((MerchantShops) plugin).getMerchants().remove(merchant);
                             merchant.remove();
                             
@@ -160,7 +161,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     return true;
                                 }
                                 
-                            } catch(Exception e) {
+                            } catch(NumberFormatException e) {
                                 sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
                                 return true;
                             }
@@ -210,7 +211,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             
                                             location = new Location(playerSender.getWorld(), posX, posY, posZ, yaw, pitch);
                                             
-                                        } catch (IllegalArgumentException e) {
+                                        } catch (NumberFormatException e) {
                                             playerSender.sendMessage(ChatColor.RED + "Invalid position data given!");
                                             return true;
                                         }
@@ -254,7 +255,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                         amount = Integer.parseInt(args[5]);
                                         levelCost = Integer.parseInt(args[6]);
                                 		
-                                    } catch (IllegalArgumentException e) {
+                                    } catch (NumberFormatException e) {
                                         sender.sendMessage(ChatColor.RED + "Invalid parameters given!");
                                         return true;
                                     }
@@ -287,7 +288,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                         }
                                         
                                     } catch(Exception e) {
-                                        sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
+                                        sender.sendMessage(ChatColor.RED + args[3] + " is not a valid id number!");
                                         return true;
                                     }
                                     
@@ -304,7 +305,311 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                             else if(args[2].equalsIgnoreCase("edititem"))
                             {
-    						    
+                                if(args.length >= 5)
+                                {
+                                    //Get buyable item
+                                    int itemId;
+                                    BuyableItem buyableItem = null;
+                                    try 
+                                    {
+                                        itemId = Integer.parseInt(args[3]);
+                                        if(itemId >= 0 && itemId < merchant.getItemsForSale().size())
+                                            buyableItem = merchant.getItemsForSale().get(itemId);
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.RED + "ID: " + args[3] + " is out of range!");
+                                            return true;
+                                        }
+                                        
+                                    } catch(NumberFormatException e) {
+                                        sender.sendMessage(ChatColor.RED + args[3] + " is not a valid id number!");
+                                        return true;
+                                    }
+                                    
+                                    //options
+                                    if(args[4].equalsIgnoreCase("itemKey"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            String itemKey = args[5].toLowerCase();
+                                            buyableItem.setItemKey(itemKey);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") has been set to " + ChatColor.AQUA + itemKey);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> itemkey <itemkey>");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("damage"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            int damage = 0;
+                                            try 
+                                            { damage = Integer.parseInt(args[5]); } 
+                                            catch(NumberFormatException e) 
+                                            {
+                                                sender.sendMessage(ChatColor.RED + args[5] + " is not a valid number!");
+                                                return true;
+                                            }
+                                            
+                                            buyableItem.setDamage(damage);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") damage set to " + ChatColor.AQUA + damage);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> damage <damage>");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("amount"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            int amount = 0;
+                                            try 
+                                            { amount = Integer.parseInt(args[5]); } 
+                                            catch(NumberFormatException e) 
+                                            {
+                                                sender.sendMessage(ChatColor.RED + args[5] + " is not a valid number!");
+                                                return true;
+                                            }
+                                            
+                                            buyableItem.setAmount(amount);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") amount set to " + ChatColor.AQUA + amount);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> amount <amount>");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("levelcost"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            int levelCost = 0;
+                                            try 
+                                            { levelCost = Integer.parseInt(args[5]); } 
+                                            catch(NumberFormatException e) 
+                                            {
+                                                sender.sendMessage(ChatColor.RED + args[5] + " is not a valid number!");
+                                                return true;
+                                            }
+                                            
+                                            buyableItem.setLevelCost(levelCost);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") level cost set to " + ChatColor.AQUA + levelCost);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> levelcost <levelcost>");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("name"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            String displayName = args[5].replace("_", " ");
+                                            buyableItem.setDisplayName(displayName);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") display name set to " + ChatColor.AQUA + displayName);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> name <name>");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("skullowner"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            String skullOwner = args[5];
+                                            buyableItem.setSkullOwner(skullOwner);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") skull owner set to " + ChatColor.AQUA + skullOwner);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> skullowner <UUID>");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("skulltexture"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            String skullTexture = args[5];
+                                            buyableItem.setSkullTexture(skullTexture);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") skull texture set to " + ChatColor.AQUA + skullTexture);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> skulltexture <skulltexture>");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("lore"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            buyableItem.getLore().clear();
+                                            String[] loreLines = args[5].split(":");
+                                            for(String loreLine : loreLines)
+                                                buyableItem.getLore().add(loreLine.replace("_", " "));
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") lore has changed");
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> lore <lore> (lore lines are seperated by ':')");
+                                            return true;
+                                        }
+                                    }
+                                    else if(args[4].equalsIgnoreCase("enchants"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            if(args[5].equalsIgnoreCase("add"))
+                                            {
+                                                if(args.length >= 7)
+                                                {
+                                                    int level = 1;
+                                                    String enchantKey = args[6];
+                                                    if(buyableItem.hasEnchant(enchantKey) == false)
+                                                    {
+                                                        //Specified level
+                                                        if(args.length >= 8)
+                                                        {
+                                                            try 
+                                                            { level = Integer.parseInt(args[7]); } 
+                                                            catch(NumberFormatException e) 
+                                                            {
+                                                                sender.sendMessage(ChatColor.RED + args[7] + " is not a valid number!");
+                                                                return true;
+                                                            }
+                                                        }
+                                                        
+                                                        buyableItem.addEnchant(enchantKey, level);
+                                                            
+                                                        sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " has been to item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId);
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        sender.sendMessage(ChatColor.RED + "Item: " + itemId + " already has the " + enchantKey + " enchantment!");
+                                                        return true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> enchants add <enchantKey> [level]");
+                                                    return true;
+                                                }
+                                            }
+                                            else if(args[5].equalsIgnoreCase("remove"))
+                                            {
+                                                if(args.length >= 7)
+                                                {
+                                                    String enchantKey = args[6];
+                                                    int idx = buyableItem.getEnchantIndex(enchantKey);
+                                                    if(idx != -1)
+                                                    {
+                                                        buyableItem.removeEnchant(idx);
+                                                        sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " has been removed");
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        sender.sendMessage(ChatColor.RED + "Item: " + itemId + " does not have the " + enchantKey + " enchantment!");
+                                                        return true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> enchants remove <enchantKey>");
+                                                    return true;
+                                                }
+                                            }
+                                            else if(args[5].equalsIgnoreCase("setlevel"))
+                                            {
+                                                if(args.length >= 8)
+                                                {
+                                                    int level = 0;
+                                                    String enchantKey = args[6];
+                                                    int idx = buyableItem.getEnchantIndex(enchantKey);
+                                                    if(idx != -1)
+                                                    {
+                                                        try 
+                                                        { level = Integer.parseInt(args[7]); } 
+                                                        catch(NumberFormatException e) 
+                                                        {
+                                                            sender.sendMessage(ChatColor.RED + args[7] + " is not a valid number!");
+                                                            return true;
+                                                        }
+                                                        
+                                                        buyableItem.setEnchantLevel(idx, level);;
+                                                       
+                                                        sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " level set tp " + ChatColor.AQUA);
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        sender.sendMessage(ChatColor.RED + "Item: " + itemId + " does not have the " + enchantKey + " enchantment!");
+                                                        return true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> enchants setlevel <enchantKey> <level>");
+                                                    return true;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                sender.sendMessage(ChatColor.RED + "Invalid option, possible options: add, remove, setlevel");
+                                                return true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> enchants <add/remove|setlevel>");
+                                            return true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sender.sendMessage(ChatColor.RED + "Invalid option, possible options: itemkey, damage, amount, levelcost, name, skullowner, skulltexture, lore, enchants");
+                                        return true;
+                                    }
+                                }
+                                else
+                                {
+                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> renoveitem <id>");
+                                    return true;
+                                }
                             }
                             else if(args[2].equalsIgnoreCase("listitems"))
                             {
@@ -629,7 +934,102 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                     }
                     else if(args[3].equalsIgnoreCase("edititem"))
                     {
+                        if(args.length == 5)
+                        {
+                            if(args[4].isEmpty() == false)
+                            {
+                                if("itemkey".startsWith(args[4].toLowerCase()))
+                                    options.add("itemkey");
+                                if("damage".startsWith(args[4].toLowerCase()))
+                                    options.add("damage");
+                                if("amount".startsWith(args[4].toLowerCase()))
+                                    options.add("amount");
+                                if("levelcost".startsWith(args[4].toLowerCase()))
+                                    options.add("levelcost");
+                                if("name".startsWith(args[4].toLowerCase()))
+                                    options.add("name");
+                                if("skullowner".startsWith(args[4].toLowerCase()))
+                                    options.add("skullowner");
+                                if("skulltexture".startsWith(args[4].toLowerCase()))
+                                    options.add("skulltexture");
+                                if("lore".startsWith(args[4].toLowerCase()))
+                                    options.add("lore");
+                                if("enchants".startsWith(args[4].toLowerCase()))
+                                    options.add("enchants");
+                            }
+                            else
+                            {
+                                    options.add("itemkey");
+                                    options.add("damage");
+                                    options.add("amount");
+                                    options.add("levelcost");
+                                    options.add("name");
+                                    options.add("skullowner");
+                                    options.add("skulltexture");
+                                    options.add("lore");
+                                    options.add("enchants");
+                            }
+                        }
                         
+                        //Sub options
+                        if(args.length >= 6)
+                        {
+                            if(args[4].equalsIgnoreCase("itemkey"))
+                            {
+                                if(args.length == 6)
+                                {
+                                    if(args[5].isEmpty() == false)
+                                    {
+                                        for(Material material : Material.values())
+                                            if(material.name().startsWith("LEGACY_") == false)
+                                                if(material.name().toLowerCase().startsWith(args[5].toLowerCase()))
+                                                    options.add(material.name().toLowerCase());
+                                    }
+                                    else
+                                    {
+                                        for(Material material : Material.values())
+                                            if(material.name().startsWith("LEGACY_") == false)                                      
+                                                options.add(material.name().toLowerCase());
+                                    }
+                                }
+                            }
+                            else if(args[4].equalsIgnoreCase("enchants"))
+                            {
+                                if(args.length == 6)
+                                {
+                                    if(args[5].isEmpty() == false)
+                                    {
+                                        if("add".startsWith(args[5].toLowerCase()))
+                                            options.add("add");
+                                        if("remove".startsWith(args[5].toLowerCase()))
+                                            options.add("remove");
+                                        if("setlevel".startsWith(args[5].toLowerCase()))
+                                            options.add("setlevel");
+                                    }
+                                    else
+                                    {
+                                        options.add("add");
+                                        options.add("remove");                                        
+                                        options.add("setlevel");
+                                    }
+                                }
+                                
+                                if(args.length == 7)
+                                {
+                                    if(args[6].isEmpty() == false)
+                                    {
+                                        for(Enchantment enchant : Enchantment.values())
+                                            if(enchant.getKey().getKey().toLowerCase().startsWith(args[6].toLowerCase()))
+                                                options.add(enchant.getKey().getKey().toLowerCase());
+                                    }
+                                    else
+                                    {
+                                        for(Enchantment enchant : Enchantment.values())
+                                            options.add(enchant.getKey().getKey().toLowerCase());
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -154,7 +154,7 @@ public class Merchant
                         String[] enchantData = enchant.split(" ");
                         int level = Integer.parseInt(enchantData[1]);
     				
-                        item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0])), level);
+                        item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0].toLowerCase())), level);
                     }
                     catch(Exception  e)
                     { 
