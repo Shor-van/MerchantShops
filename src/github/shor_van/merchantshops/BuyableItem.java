@@ -40,7 +40,7 @@ public class BuyableItem
      * @return the index of the enchant in the list, -1 if the item does not have the enchant*/
     public int getEnchantIndex(String enchantKey)
     {
-        for(int i = 0; i > enchants.size(); i++)
+        for(int i = 0; i < enchants.size(); i++)
             if(enchants.get(i).split(" ")[0].toLowerCase().equals(enchantKey.toLowerCase()))
                 return i;
         return -1;
