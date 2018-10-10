@@ -36,342 +36,342 @@ public class CommandHandler implements CommandExecutor, TabCompleter
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) 
     {
         if (cmd.getName().equalsIgnoreCase("shop"))//<-checks if command sent was /shop
-    	{
-    	    //OP/perms check
-    	    if(sender.hasPermission("merchantshop.command.shop") && sender.isOp() == true)
-    		{
-    		    if(args.length >= 1)
-    			{
-    			    if(args[0].equalsIgnoreCase("addmerchant"))
-    				{
-    				    if(sender instanceof Player)
-    					{
-    					    if(args.length >= 4)
-    						{
-    						    Player playerSender = (Player)sender;
-    							Location location = null;
-    							String displayName = ChatColor.BOLD + "NOT NAMED!";
-    							
-    							//Validate/parse
-    							try
-    							{
-    							    //base position data
-    							    double posX = Double.parseDouble(args[1]);
-    								double posY = Double.parseDouble(args[2]);
-    								double posZ = Double.parseDouble(args[3]);
-    								
-    								//pitch
-    								float pitch = 0f;
-    								if(args.length >= 5)
-    								    pitch = Float.parseFloat(args[4]);
-    								
-    								//yaw
-    								float yaw = 0f;
-    								if(args.length >= 6)
-    								    yaw = Float.parseFloat(args[5]);
-    								
-    								location = new Location(playerSender.getWorld(), posX, posY, posZ, yaw, pitch);
+        {
+            //OP/perms check
+            if(sender.hasPermission("merchantshop.command.shop") && sender.isOp() == true)
+            {
+                if(args.length >= 1)
+                {
+                    if(args[0].equalsIgnoreCase("addmerchant"))
+                    {
+                        if(sender instanceof Player)
+                        {
+                            if(args.length >= 4)
+                            {
+                                Player playerSender = (Player)sender;
+                                Location location = null;
+                                String displayName = ChatColor.BOLD + "NOT NAMED!";
+                                
+                                //Validate/parse
+                                try
+                                {
+                                    //base position data
+                                    double posX = Double.parseDouble(args[1]);
+                                    double posY = Double.parseDouble(args[2]);
+                                    double posZ = Double.parseDouble(args[3]);
+                                    
+                                    //pitch
+                                    float pitch = 0f;
+                                    if(args.length >= 5)
+                                        pitch = Float.parseFloat(args[4]);
+                                    
+                                    //yaw
+                                    float yaw = 0f;
+                                    if(args.length >= 6)
+                                        yaw = Float.parseFloat(args[5]);
+                                    
+                                    location = new Location(playerSender.getWorld(), posX, posY, posZ, yaw, pitch);
 
-    							} catch (IllegalArgumentException e) {
-    							    playerSender.sendMessage(ChatColor.RED + "Invalid position data given!");
-    								return true;
-    							}
+                                } catch (IllegalArgumentException e) {
+                                    playerSender.sendMessage(ChatColor.RED + "Invalid position data given!");
+                                    return true;
+                                }
     							
-    							//Name
-    							if(args.length >= 7)
-    							    displayName = args[6].replace("_", " ");
-    							
-    							//create
-    							((MerchantShops) plugin).createNewMerchant(location, displayName);;
-    							
-    							playerSender.sendMessage(ChatColor.GOLD + "New merchant created at X: " + ChatColor.AQUA + location.getX() + ChatColor.GOLD  + " Y: " + ChatColor.AQUA + location.getY() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + location.getZ());
-    							return true;
-    						}
-    						else
-    						{
-    						    sender.sendMessage(ChatColor.AQUA + "Usage: /shop addmerchant <x> <y> <z> [pitch] [yaw] [name]");
-    							return true;
-    						}
-    					}
-    					else if(sender instanceof ConsoleCommandSender)
-    					{
-    					    if(args.length >= 5)
-    						{
-    						    
-    						}
-    						else
-    						{
-    						    sender.sendMessage(ChatColor.AQUA + "Usage: /shop addmerchant <world> <x> <y> <z> [pitch] [yaw] [name]");
-    							return true;
-    						}
-    					}
-    				}
-    				else if(args[0].equalsIgnoreCase("removemerchant"))
-    				{
-    				    if(args.length >= 2)
-    					{
-    					    //Get merchant
-    					    int id;
-    						Merchant merchant = null;
-    						try 
-    						{
-    						    id = Integer.parseInt(args[1]);
-    							if(id >= 0 && id < ((MerchantShops) plugin).getMerchants().size())
-    							    merchant = ((MerchantShops) plugin).getMerchants().get(id);
-    							else
-    							{
-    							    sender.sendMessage(ChatColor.RED + "ID: " + args[1] + " is out of range!");
-    								return true;
-    							}
-    							
-    						} catch(Exception e) {
-    						    sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
-    							return true;
-    						}
-    						
-    						sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchant.getMerchantEntity().getCustomName() + ChatColor.GOLD + "(" + ChatColor.AQUA + id + ChatColor.GOLD + ") has been removed.");
-    						((MerchantShops) plugin).getMerchants().remove(merchant);
-    						merchant.remove();
-    						
-    						((MerchantShops) plugin).saveMerchants();
-    						return true;
-    					}
-    					else
-    					{
-    					    sender.sendMessage(ChatColor.AQUA + "Usage: /shop removemerchant <id>");
-    						return true;
-    					}
+                                //Name
+                                if(args.length >= 7)
+                                    displayName = args[6].replace("_", " ");
+                                
+                                //create
+                                ((MerchantShops) plugin).createNewMerchant(location, displayName);;
+                                
+                                playerSender.sendMessage(ChatColor.GOLD + "New merchant created at X: " + ChatColor.AQUA + location.getX() + ChatColor.GOLD  + " Y: " + ChatColor.AQUA + location.getY() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + location.getZ());
+                                return true;
+                            }
+                            else
+                            {
+                                sender.sendMessage(ChatColor.AQUA + "Usage: /shop addmerchant <x> <y> <z> [pitch] [yaw] [name]");
+                                return true;
+                            }
+                        }
+                        else if(sender instanceof ConsoleCommandSender)
+                        {
+                            if(args.length >= 5)
+                            {
+                                    
+                            }
+                            else
+                            {
+                                sender.sendMessage(ChatColor.AQUA + "Usage: /shop addmerchant <world> <x> <y> <z> [pitch] [yaw] [name]");
+                                return true;
+                            }
+                        }
                     }
-    				else if(args[0].equalsIgnoreCase("merchant")) //Add new item to the list
-    				{
-    				    if(args.length >= 3)
-    					{
+                    else if(args[0].equalsIgnoreCase("removemerchant"))
+                    {
+                        if(args.length >= 2)
+                        {
+                            //Get merchant
+                            int id;
+                            Merchant merchant = null;
+                            try 
+                            {
+                                id = Integer.parseInt(args[1]);
+                                if(id >= 0 && id < ((MerchantShops) plugin).getMerchants().size())
+                                    merchant = ((MerchantShops) plugin).getMerchants().get(id);
+                                else
+                                {
+                                    sender.sendMessage(ChatColor.RED + "ID: " + args[1] + " is out of range!");
+                                    return true;
+                                }
+                                
+                            } catch(Exception e) {
+                                sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
+                                return true;
+                            }
+                            
+                            sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchant.getMerchantEntity().getCustomName() + ChatColor.GOLD + "(" + ChatColor.AQUA + id + ChatColor.GOLD + ") has been removed.");
+                            ((MerchantShops) plugin).getMerchants().remove(merchant);
+                            merchant.remove();
+                            
+                            ((MerchantShops) plugin).saveMerchants();
+                            return true;
+                        }
+                        else
+                        {
+                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop removemerchant <id>");
+                            return true;
+                        }
+                    }
+                    else if(args[0].equalsIgnoreCase("merchant")) //Add new item to the list
+                    {
+                        if(args.length >= 3)
+                        {
                             //Get merchant
                             int merchantId;
                             Merchant merchant = null;
                             try 
                             {
-                            	merchantId = Integer.parseInt(args[1]);
-                            	if(merchantId >= 0 && merchantId < ((MerchantShops) plugin).getMerchants().size())
-                            		merchant = ((MerchantShops) plugin).getMerchants().get(merchantId);
-                            	else
-                            	{
-                            		sender.sendMessage(ChatColor.RED + "ID: " + args[1] + " is out of range!");
-                            		return true;
-                            	}
-                            	
+                                merchantId = Integer.parseInt(args[1]);
+                                if(merchantId >= 0 && merchantId < ((MerchantShops) plugin).getMerchants().size())
+                                    merchant = ((MerchantShops) plugin).getMerchants().get(merchantId);
+                                else
+                                {
+                                    sender.sendMessage(ChatColor.RED + "ID: " + args[1] + " is out of range!");
+                                    return true;
+                                }
+                                
                             } catch(Exception e) {
-                            	sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
-                            	return true;
+                                sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
+                                return true;
                             }
-    						
-    						//options
-    						if(args[2].equalsIgnoreCase("name"))
-    						{
+                            
+                            //options
+                            if(args[2].equalsIgnoreCase("name"))
+                            {
                                 if(args.length >= 4)
                                 {
-                                	merchant.getMerchantEntity().setCustomName(ChatColor.translateAlternateColorCodes('&', args[3].replace("_", " ")));
-                                	sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " name changed to " + ChatColor.AQUA + merchant.getMerchantEntity().getCustomName().replace("_", " ") + ChatColor.GOLD + ".");
-                                	((MerchantShops) plugin).saveMerchants();
-                                	return true;
+                                    merchant.getMerchantEntity().setCustomName(ChatColor.translateAlternateColorCodes('&', args[3].replace("_", " ")));
+                                    sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " name changed to " + ChatColor.AQUA + merchant.getMerchantEntity().getCustomName().replace("_", " ") + ChatColor.GOLD + ".");
+                                    ((MerchantShops) plugin).saveMerchants();
+                                    return true;
                                 }
                                 else
                                 {
-                                	sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> name <name>");
-                                	return true;
+                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> name <name>");
+                                    return true;
                                 }
-    						}
-    						else if(args[2].equalsIgnoreCase("position"))
-    						{
+                            }
+                            else if(args[2].equalsIgnoreCase("position"))
+                            {
                                 if(sender instanceof Player)
                                 {
-                                	if(args.length >= 6)
-                                	{
-                                		Player playerSender = (Player)sender;
-                                		Location location = null;
-                                		
-                                		//Validate/parse
-                                		try
-                                		{
-                                			//base position data
-                                			double posX = Double.parseDouble(args[3]);
-                                			double posY = Double.parseDouble(args[4]);
-                                			double posZ = Double.parseDouble(args[5]);
-                                			
-                                			//pitch
-                                			float pitch = 0.0f;
-                                			if(args.length >= 7)
-                                				pitch = Float.parseFloat(args[6]);
-                                			
-                                			//yaw
-                                			float yaw = 0.0f;
-                                			if(args.length >= 8)
-                                				yaw = Float.parseFloat(args[7]);
-                                			
-                                			location = new Location(playerSender.getWorld(), posX, posY, posZ, yaw, pitch);
-                                			
-                                		} catch (IllegalArgumentException e) {
-                                			playerSender.sendMessage(ChatColor.RED + "Invalid position data given!");
-                                			return true;
-                                		}
-                                		
-                                		//set location
-                                		if(merchant.setLocation(location) == true)
-                                		{
-                                			((MerchantShops) plugin).saveMerchants();
-                                			
-                                			sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " position set to  X:" + ChatColor.AQUA + location.getX() + ChatColor.GOLD 
-                                					+ " Y: " + ChatColor.AQUA + location.getZ() + ChatColor.GOLD 
-                                					+ " Z: " + ChatColor.AQUA + location.getZ() + ChatColor.GOLD
-                                					+ " Pitch: " + ChatColor.AQUA + location.getPitch() + ChatColor.GOLD
-                                					+ " Yaw: " + ChatColor.AQUA + location.getYaw());
-                                			return true;
-                                		}
-                                		else
-                                		{
-                                			sender.sendMessage(ChatColor.RED + "Mechant: " + merchantId + " could not be moved, is entity dead?");
-                                			return true;
-                                		}
-                                	}
-                                	else
-                                	{
-                                		sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> position <x> <y> <z> [pitch] [yaw]");
-                                		return true;
-                                	}
+                                    if(args.length >= 6)
+                                    {
+                                        Player playerSender = (Player)sender;
+                                        Location location = null;
+                                        
+                                        //Validate/parse
+                                        try
+                                        {
+                                            //base position data
+                                            double posX = Double.parseDouble(args[3]);
+                                            double posY = Double.parseDouble(args[4]);
+                                            double posZ = Double.parseDouble(args[5]);
+                                            
+                                            //pitch
+                                            float pitch = 0.0f;
+                                            if(args.length >= 7)
+                                                pitch = Float.parseFloat(args[6]);
+                                            
+                                            //yaw
+                                            float yaw = 0.0f;
+                                            if(args.length >= 8)
+                                                yaw = Float.parseFloat(args[7]);
+                                            
+                                            location = new Location(playerSender.getWorld(), posX, posY, posZ, yaw, pitch);
+                                            
+                                        } catch (IllegalArgumentException e) {
+                                            playerSender.sendMessage(ChatColor.RED + "Invalid position data given!");
+                                            return true;
+                                        }
+                                        
+                                        //set location
+                                        if(merchant.setLocation(location) == true)
+                                        {
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " position set to  X:" + ChatColor.AQUA + location.getX() + ChatColor.GOLD 
+                                                    + " Y: " + ChatColor.AQUA + location.getZ() + ChatColor.GOLD 
+                                                    + " Z: " + ChatColor.AQUA + location.getZ() + ChatColor.GOLD
+                                                    + " Pitch: " + ChatColor.AQUA + location.getPitch() + ChatColor.GOLD
+                                                    + " Yaw: " + ChatColor.AQUA + location.getYaw());
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.RED + "Mechant: " + merchantId + " could not be moved, is entity dead?");
+                                            return true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> position <x> <y> <z> [pitch] [yaw]");
+                                        return true;
+                                    }
                                 }
-    						}
-    						else if(args[2].equalsIgnoreCase("additem"))
-    						{
+                            }
+                            else if(args[2].equalsIgnoreCase("additem"))
+                            {
                                 if(args.length >= 7)
                                 {
-                                	String itemKey = args[3].toLowerCase();
-                                	int damage = 0;
-                                	int amount = 0;
-                                	int levelCost = 0;
-                                	try
-                                	{
-                                		damage = Integer.parseInt(args[4]);
-                                		amount = Integer.parseInt(args[5]);
-                                		levelCost = Integer.parseInt(args[6]);
+                                    String itemKey = args[3].toLowerCase();
+                                    int damage = 0;
+                                    int amount = 0;
+                                    int levelCost = 0;
+                                    try
+                                    {
+                                        damage = Integer.parseInt(args[4]);
+                                        amount = Integer.parseInt(args[5]);
+                                        levelCost = Integer.parseInt(args[6]);
                                 		
-                                	} catch (IllegalArgumentException e) {
-                                		sender.sendMessage(ChatColor.RED + "Invalid parameters given!");
-                                		return true;
-                                	}
-                                	
-                                	BuyableItem buyableItem = new BuyableItem(itemKey, damage, amount, levelCost);
-                                	merchant.getItemsForSale().add(buyableItem);
-                                	((MerchantShops) plugin).saveMerchants();
-                                	
-                                	sender.sendMessage(ChatColor.GOLD + "Item added to merchant "  + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ")");
-                                	return true;
+                                    } catch (IllegalArgumentException e) {
+                                        sender.sendMessage(ChatColor.RED + "Invalid parameters given!");
+                                        return true;
+                                    }
+                                    
+                                    BuyableItem buyableItem = new BuyableItem(itemKey, damage, amount, levelCost);
+                                    merchant.getItemsForSale().add(buyableItem);
+                                    ((MerchantShops) plugin).saveMerchants();
+                                    
+                                    sender.sendMessage(ChatColor.GOLD + "Item added to merchant "  + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ")");
+                                    return true;
                                 }
                                 else
                                 {
-                                	sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> additem <itemKey> <damage> <amount> <levelCost>");
-                                	return true;
+                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> additem <itemKey> <damage> <amount> <levelCost>");
+                                    return true;
                                 }
-    						}
-    						else if(args[2].equalsIgnoreCase("removeitem"))
-    						{
-    						    if(args.length >= 4)
-    							{
-    							    int itemId;
-    								try 
-    								{
-    								    itemId = Integer.parseInt(args[3]);
-    									if(itemId < 0 || itemId > merchant.getItemsForSale().size())
-    									{
-    									    sender.sendMessage(ChatColor.RED + "ID: " + args[3] + " is out of range!");
-    										return true;
-    									}
-    									
-    								} catch(Exception e) {
-    								    sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
-    									return true;
-    								}
-    								
-    								sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " has been removed from merchant " + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ")");
-    								merchant.getItemsForSale().remove(itemId);
-    								((MerchantShops) plugin).saveMerchants();
-    								return true;
-    							}
-    							else
-    							{
-    							    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> renoveitem <id>");
-    								return true;
-    							}
-    						}
-    						else if(args[2].equalsIgnoreCase("edititem"))
-    						{
+                            }
+                            else if(args[2].equalsIgnoreCase("removeitem"))
+                            {
+                                if(args.length >= 4)
+                                {
+                                    int itemId;
+                                    try 
+                                    {
+                                        itemId = Integer.parseInt(args[3]);
+                                        if(itemId < 0 || itemId > merchant.getItemsForSale().size())
+                                        {
+                                            sender.sendMessage(ChatColor.RED + "ID: " + args[3] + " is out of range!");
+                                            return true;
+                                        }
+                                        
+                                    } catch(Exception e) {
+                                        sender.sendMessage(ChatColor.RED + args[1] + " is not a valid id number!");
+                                        return true;
+                                    }
+                                    
+                                    sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " has been removed from merchant " + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ")");
+                                    merchant.getItemsForSale().remove(itemId);
+                                    ((MerchantShops) plugin).saveMerchants();
+                                    return true;
+                                }
+                                else
+                                {
+                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> renoveitem <id>");
+                                    return true;
+                                }
+                            }
+                            else if(args[2].equalsIgnoreCase("edititem"))
+                            {
     						    
-    						}
-    						else if(args[2].equalsIgnoreCase("listitems"))
-    						{
-    						    sender.sendMessage( ChatColor.AQUA + "Listing all items sold by merchant " + ChatColor.GOLD + merchant.getMerchantEntity().getCustomName() + ChatColor.AQUA + "(" + ChatColor.GOLD + merchantId + ChatColor.AQUA + ")....");
-    							sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
+                            }
+                            else if(args[2].equalsIgnoreCase("listitems"))
+                            {
+                                sender.sendMessage( ChatColor.AQUA + "Listing all items sold by merchant " + ChatColor.GOLD + merchant.getMerchantEntity().getCustomName() + ChatColor.AQUA + "(" + ChatColor.GOLD + merchantId + ChatColor.AQUA + ")....");
+                                sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
     							
-    							//if no items for sale
-    							if(merchant.getItemsForSale().size() == 0)
-    							{
-    							    sender.sendMessage(ChatColor.AQUA + "merchant does not seem to be selling any items.");
-    								return true;
-    							}
-    							
-    							//list items
-    							for(int i = 0; i < merchant.getItemsForSale().size();  i++)
-    							{
-    							    BuyableItem buyableItem = merchant.getItemsForSale().get(i);
-    								sender.sendMessage(ChatColor.AQUA + "ID: " + ChatColor.GOLD + i 
-    								        + ChatColor.AQUA + " Item key: " + ChatColor.GOLD + buyableItem.getItemKey());
-    							}
-    							return true;
-    						}
-    						else
-    						{
-    						    sender.sendMessage(ChatColor.RED + "Invalid option, possible options: name, position, additem, removeitem, edititem, listitems");
-    							return true;
-    						}
-    					}
-    					else
+                                //if no items for sale
+                                if(merchant.getItemsForSale().size() == 0)
+                                {
+                                    sender.sendMessage(ChatColor.AQUA + "merchant does not seem to be selling any items.");
+                                    return true;
+                                }
+                                
+                                //list items
+                                for(int i = 0; i < merchant.getItemsForSale().size();  i++)
+                                {
+                                    BuyableItem buyableItem = merchant.getItemsForSale().get(i);
+                                    sender.sendMessage(ChatColor.AQUA + "ID: " + ChatColor.GOLD + i 
+                                            + ChatColor.AQUA + " Item key: " + ChatColor.GOLD + buyableItem.getItemKey());
+                                }
+                                return true;
+                            }
+                            else
+                            {
+                                sender.sendMessage(ChatColor.RED + "Invalid option, possible options: name, position, additem, removeitem, edititem, listitems");
+                                return true;
+                            }
+                        }
+                        else
     					{
-    					    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <name|postion|additem|removeitem|listitems>");
-    						return true;
+                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <name|postion|additem|removeitem|listitems>");
+                            return true;
     					}
-    				}
-    				else if(args[0].equalsIgnoreCase("listmerchants"))
-    				{
-    				    sender.sendMessage( ChatColor.AQUA + "Listing all registered merchants....");
-    					sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
+                    }
+                    else if(args[0].equalsIgnoreCase("listmerchants"))
+                    {
+                        sender.sendMessage( ChatColor.AQUA + "Listing all registered merchants....");
+                        sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
+                        
+                        //if no merchants
+                        if(((MerchantShops) plugin).getMerchants().size() == 0)
+                        {
+                            sender.sendMessage(ChatColor.AQUA + "No merchants registered.");
+                            return true;
+                        }
     					
-    					//if no merchants
-    					if(((MerchantShops) plugin).getMerchants().size() == 0)
-    					{
-    					    sender.sendMessage(ChatColor.AQUA + "No merchants registered.");
-    						return true;
-    					}
-    					
-    					//list merchants
-    					for(int i = 0; i < ((MerchantShops) plugin).getMerchants().size(); i++)
-    					{
-    					    Merchant merchant = ((MerchantShops) plugin).getMerchants().get(i);
-    						sender.sendMessage(ChatColor.AQUA + "ID: " + ChatColor.GOLD + i + 
-    						        ChatColor.AQUA + " Name: " + ChatColor.GOLD + merchant.getMerchantEntity().getCustomName() + 
-    								ChatColor.AQUA + " posX: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getX() +
-    								ChatColor.AQUA + " posY: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getY() +
-    								ChatColor.AQUA + " posZ: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getZ());
-    					}
-    					return true;
-    				}
-    				else if(args[0].equalsIgnoreCase("reload"))
-    				{
-                        //plugin.getServer().getPluginManager().disablePlugin(plugin);
+                        //list merchants
+                        for(int i = 0; i < ((MerchantShops) plugin).getMerchants().size(); i++)
+                        {
+                            Merchant merchant = ((MerchantShops) plugin).getMerchants().get(i);
+                            sender.sendMessage(ChatColor.AQUA + "ID: " + ChatColor.GOLD + i + 
+                                    ChatColor.AQUA + " Name: " + ChatColor.GOLD + merchant.getMerchantEntity().getCustomName() + 
+                                    ChatColor.AQUA + " posX: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getX() +
+                                    ChatColor.AQUA + " posY: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getY() +
+                                    ChatColor.AQUA + " posZ: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getZ());
+                        }
+                        return true;
+                    }
+                    else if(args[0].equalsIgnoreCase("reload"))
+                    {
+                        //plugin.getServer().getPluginManager().disablePlugin(plugin);  
                         //plugin.getServer().getPluginManager().enablePlugin(plugin);
                         sender.sendMessage(ChatColor.RED + "Not enabled.");
                         return true;
-    				}
-    				else if(args[0].equalsIgnoreCase("help")) //Shop help command
-    				{
+                    }
+                    else if(args[0].equalsIgnoreCase("help")) //Shop help command
+                    {
                         sender.sendMessage("Shop coammnds" + ChatColor.GOLD + " (" + ChatColor.AQUA + "<requierd>" + ChatColor.DARK_AQUA + " [optional]" + ChatColor.GOLD + ")");
                         sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
                         sender.sendMessage(ChatColor.AQUA + "/shop addmerchant " + ChatColor.GOLD + "-" + ChatColor.WHITE + " adds a new merchant at the specified location.");
@@ -382,21 +382,21 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                         sender.sendMessage(ChatColor.AQUA + "/shop help " + ChatColor.GOLD + "-" + ChatColor.WHITE + " shows the list of commands.");
                         sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
                         return true;
-    				}
-    			}
-    			else
-    			{
-    			    sender.sendMessage(ChatColor.AQUA + "Usage: /shop <addmerchant|removemerchant|merchant|listmerchants|help>");
-    				return true;
-    			}
-    		}
-    		else
-    		{
-    		    sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
-    		    return true;
-    		}
-    	}
-    	return false;
+                    }
+                }
+                else
+                {
+                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop <addmerchant|removemerchant|merchant|listmerchants|help>");
+                    return true;
+                }
+            }
+            else
+            {
+                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                return true;
+            }
+        }
+        return false;
     }
     
     /**Handles tab completion of the /shop command
@@ -515,17 +515,17 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                     if(args[2].isEmpty() == false)
                     {
                         if("name".startsWith(args[2].toLowerCase()))
-                        	options.add("name");
+                            options.add("name");
                         if("position".startsWith(args[2].toLowerCase()))
-                        	options.add("position");
+                            options.add("position");
                         if("additem".startsWith(args[2].toLowerCase()))
-                        	options.add("additem");
+                            options.add("additem");
                         if("removeitem".startsWith(args[2].toLowerCase()))
-                        	options.add("removeitem");
+                            options.add("removeitem");
                         if("edititem".startsWith(args[2].toLowerCase()))
-                        	options.add("edititem");
+                            options.add("edititem");
                         if("listitems".startsWith(args[2].toLowerCase()))
-                        	options.add("listitems");
+                            options.add("listitems");
                     }
                     else
                     {

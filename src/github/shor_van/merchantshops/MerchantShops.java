@@ -226,7 +226,7 @@ public class MerchantShops extends JavaPlugin
     			
                 //enchants if has
                 if(buyableItem.getEnchants().size() > 0)
-    			    itemSection.set("enchants", buyableItem.getEnchants());
+                    itemSection.set("enchants", buyableItem.getEnchants());
             }
         }
         this.saveConfig();

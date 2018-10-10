@@ -163,7 +163,6 @@ public class Merchant
                     }
                 }
             }
-    					
             buyMenu.addItem(item);
         }
     	
