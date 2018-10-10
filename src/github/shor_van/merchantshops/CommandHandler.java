@@ -937,7 +937,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                         }
                     }
-                    else if(args[3].equalsIgnoreCase("edititem"))
+                    else if(args[2].equalsIgnoreCase("edititem"))
                     {
                         if(args.length == 5)
                         {
