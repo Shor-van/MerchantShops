@@ -127,33 +127,33 @@ public class EventListener implements Listener
                                 //if has lore
                                 List<String> lore = new ArrayList<>();
                                 if(buyableItem.getLore().size() > 0)
-    						        for(String line : buyableItem.getLore())
-    						            lore.add(ChatColor.translateAlternateColorCodes('&', line));
-    						    meta.setLore(lore);
-    						
-    						    //set meta
-    						    item.setItemMeta(meta);
-    						    
-    						    //if has enchants
-    						    if(buyableItem.getEnchants().size() > 0)
-    						    {
-    						        for(String enchant : buyableItem.getEnchants())
-    						        {
-    						            String[] enchantData = enchant.split(" ");
-    						            int level = Integer.parseInt(enchantData[1]);
-    								
-    						            item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0])), level);
-    						        }
-    						    }
+                                    for(String line : buyableItem.getLore())
+                                        lore.add(ChatColor.translateAlternateColorCodes('&', line));
+                                meta.setLore(lore);
+                                
+                                //set meta
+                                item.setItemMeta(meta);
+                                
+                                //if has enchants
+                                if(buyableItem.getEnchants().size() > 0)
+                                {
+                                    for(String enchant : buyableItem.getEnchants())
+                                    {
+                                        String[] enchantData = enchant.split(" ");
+                                        int level = Integer.parseInt(enchantData[1]);
+                                        
+                                        item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0])), level);
+                                    }
+                                }
 
-    						    //give item
-    						    player.getInventory().addItem(item);
-   						
-    						    //subtract cost from player level
-    						    player.setLevel(player.getLevel() - buyableItem.getLevelCost());
-    						
-    						    String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
-    						    player.sendMessage(ChatColor.GOLD + "" + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getLevelCost() + " levels.");
+                                //give item
+                                player.getInventory().addItem(item);
+                                
+                                //subtract cost from player level
+                                player.setLevel(player.getLevel() - buyableItem.getLevelCost());
+                                
+                                String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
+                                player.sendMessage(ChatColor.GOLD + "" + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getLevelCost() + " levels.");
                             }
                             else
                             {
