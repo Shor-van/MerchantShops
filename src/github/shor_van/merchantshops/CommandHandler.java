@@ -577,7 +577,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                         buyableItem.setEnchantLevel(idx, level);;
                                                         ((MerchantShops) plugin).saveMerchants();
                                                        
-                                                        sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " level set tp " + ChatColor.AQUA);
+                                                        sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " level set to " + ChatColor.AQUA + level);
                                                         return true;
                                                     }
                                                     else
