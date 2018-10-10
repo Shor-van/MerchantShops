@@ -29,7 +29,7 @@ public class EventListener implements Listener
     
     public EventListener(JavaPlugin plugin)
     {
-    	this.plugin = plugin;
+        this.plugin = plugin;
     }
     
     /**Triggered when a player right clicks on a entity
@@ -37,16 +37,16 @@ public class EventListener implements Listener
     @EventHandler(priority=EventPriority.HIGH)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
     {
-    	Player player = event.getPlayer();
-    	Entity clicked = event.getRightClicked();
-    	for(Merchant merchant : ((MerchantShops) plugin).getMerchants())
-    	{
-    		if(merchant.getMerchantEntityUUID().equals(clicked.getUniqueId()))
-    		{
-    			event.setCancelled(true);
-    			merchant.showBuyMenu(player, 0);
-    		}
-    	}
+        Player player = event.getPlayer();
+        Entity clicked = event.getRightClicked();
+        for(Merchant merchant : ((MerchantShops) plugin).getMerchants())
+        {
+            if(merchant.getMerchantEntityUUID().equals(clicked.getUniqueId()))
+            {
+                event.setCancelled(true);
+                merchant.showBuyMenu(player, 0);
+            }
+        }
     }
     
     /**Triggered when a player clicks in a inventory
@@ -55,120 +55,120 @@ public class EventListener implements Listener
     @EventHandler(priority=EventPriority.HIGH)
     public void onInventoryClick(InventoryClickEvent event)
     {
-    	Player player = (Player) event.getWhoClicked();
-    	Inventory inventory = event.getInventory();
-    	for(Merchant merchant : ((MerchantShops) plugin).getMerchants())
-    	{
-    		//is inventory merchant inventory 
-    	if(inventory.getName().equals(merchant.getMerchantEntity().getCustomName()))
-    	{
-    		//cancel event
-    		event.setCancelled(true);
-    		
-    		//clicked in merchant inventory
-    		int slotClicked = event.getRawSlot();
-    		if(slotClicked >= 0 && slotClicked < inventory.getSize())
-    		{
-    			ItemStack clickedItem = inventory.getItem(slotClicked);
-    			if(clickedItem != null)
-    			{
-    				//get the startIdx
-    				int startIdx = 0;
-    				ItemStack prevPage = inventory.getItem(inventory.getSize() - 9);
-    				if(prevPage != null && prevPage.getType() == Merchant.buttonMaterial && prevPage.getItemMeta().getLore().get(0).equals(Merchant.prevPageLoreToken))
-    				{
-    					int page = Integer.parseInt(prevPage.getItemMeta().getDisplayName().split(" ")[1]);
-    					startIdx = page * Merchant.displaySize;
-    				}
-    					
-    				//if next page item clicked
-    				if((slotClicked == inventory.getSize() - 1) && clickedItem.getType() == Merchant.buttonMaterial && clickedItem.getItemMeta().getLore().get(0).equals(Merchant.nextPageLoreToken))
-    				{
-    					int page = Integer.parseInt(clickedItem.getItemMeta().getDisplayName().split(" ")[1]);
-    					merchant.showBuyMenu(player, (page - 1) * Merchant.displaySize);
-    					return;
-    				}
-    				
-    				//prev page item clicked
-    				if(slotClicked == inventory.getSize() - 9 && clickedItem.getType() == Merchant.buttonMaterial && clickedItem.getItemMeta().getLore().get(0).equals(Merchant.prevPageLoreToken))
-    				{
-    					int page = Integer.parseInt(clickedItem.getItemMeta().getDisplayName().split(" ")[1]);
-    					merchant.showBuyMenu(player, (page - 1) * Merchant.displaySize);
-    					return;
-    				}
-    				
-    				//Get buyable item
-    				BuyableItem buyableItem = merchant.getItemsForSale().get(slotClicked + startIdx);
-    				
-    				//Check player has enough levels
-    				if(player.getLevel() >= buyableItem.getLevelCost())
-    				{
-    					//check if player has space in inventory
-    					if(player.getInventory().firstEmpty() != -1)
-    					{
-    						ItemStack item = new ItemStack(Material.getMaterial(buyableItem.getItemKey().toUpperCase()));
-    						ItemMeta meta = item.getItemMeta();
-    						item.setDurability((short) buyableItem.getDamage());
-    						item.setAmount(buyableItem.getAmount());
+        Player player = (Player) event.getWhoClicked();
+        Inventory inventory = event.getInventory();
+        for(Merchant merchant : ((MerchantShops) plugin).getMerchants())
+        {
+            //is inventory merchant inventory 
+            if(inventory.getName().equals(merchant.getMerchantEntity().getCustomName()))
+            {
+                //cancel event
+                event.setCancelled(true);
+                
+                //clicked in merchant inventory
+                int slotClicked = event.getRawSlot();
+                if(slotClicked >= 0 && slotClicked < inventory.getSize())
+                {
+                    ItemStack clickedItem = inventory.getItem(slotClicked);
+                    if(clickedItem != null)
+                    {
+                        //get the startIdx
+                        int startIdx = 0;
+                        ItemStack prevPage = inventory.getItem(inventory.getSize() - 9);
+                        if(prevPage != null && prevPage.getType() == Merchant.buttonMaterial && prevPage.getItemMeta().getLore().get(0).equals(Merchant.prevPageLoreToken))
+                        {
+                            int page = Integer.parseInt(prevPage.getItemMeta().getDisplayName().split(" ")[1]);
+                            startIdx = page * Merchant.displaySize;
+                        }
+                        
+                        //if next page item clicked
+                        if((slotClicked == inventory.getSize() - 1) && clickedItem.getType() == Merchant.buttonMaterial && clickedItem.getItemMeta().getLore().get(0).equals(Merchant.nextPageLoreToken))
+                        {
+                            int page = Integer.parseInt(clickedItem.getItemMeta().getDisplayName().split(" ")[1]);
+                            merchant.showBuyMenu(player, (page - 1) * Merchant.displaySize);
+                            return;
+                        }
+                        
+                        //prev page item clicked
+                        if(slotClicked == inventory.getSize() - 9 && clickedItem.getType() == Merchant.buttonMaterial && clickedItem.getItemMeta().getLore().get(0).equals(Merchant.prevPageLoreToken))
+                        {
+                            int page = Integer.parseInt(clickedItem.getItemMeta().getDisplayName().split(" ")[1]);
+                            merchant.showBuyMenu(player, (page - 1) * Merchant.displaySize);
+                            return;
+                        }
+
+                        //Get buyable item
+                        BuyableItem buyableItem = merchant.getItemsForSale().get(slotClicked + startIdx);
+                        
+                        //Check player has enough levels
+                        if(player.getLevel() >= buyableItem.getLevelCost())
+                        {
+                            //check if player has space in inventory
+                            if(player.getInventory().firstEmpty() != -1)
+                            {
+                                ItemStack item = new ItemStack(Material.getMaterial(buyableItem.getItemKey().toUpperCase()));
+                                ItemMeta meta = item.getItemMeta();
+                                item.setDurability((short) buyableItem.getDamage());
+                                item.setAmount(buyableItem.getAmount());
+
+                                //if skull is skull
+                                if(item.getType() == Material.PLAYER_HEAD)
+                                    if(buyableItem.getSkullOwner().isEmpty() == false)
+                                        ((SkullMeta)meta).setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(buyableItem.getSkullOwner())));										
+
+                                //if has skull texture
+                                if(buyableItem.getSkullTexture().isEmpty() == false)
+                                    MerchantShops.applyTexture((SkullMeta)meta, UUID.fromString(buyableItem.getSkullOwner()), buyableItem.getSkullTexture());
+
+                                //if has display name
+                                if(buyableItem.getDisplayName().isEmpty() == false)
+                                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', buyableItem.getDisplayName()));
+                                
+                                //if has lore
+                                List<String> lore = new ArrayList<>();
+                                if(buyableItem.getLore().size() > 0)
+    						        for(String line : buyableItem.getLore())
+    						            lore.add(ChatColor.translateAlternateColorCodes('&', line));
+    						    meta.setLore(lore);
     						
-    						//if skull is skull
-    						if(item.getType() == Material.PLAYER_HEAD)
-    							if(buyableItem.getSkullOwner().isEmpty() == false)
-    								((SkullMeta)meta).setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(buyableItem.getSkullOwner())));										
-    						
-    						//if has skull texture
-    						if(buyableItem.getSkullTexture().isEmpty() == false)
-    							MerchantShops.applyTexture((SkullMeta)meta, UUID.fromString(buyableItem.getSkullOwner()), buyableItem.getSkullTexture());
-    						
-    						//if has display name
-    						if(buyableItem.getDisplayName().isEmpty() == false)
-    							meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', buyableItem.getDisplayName()));
-    						
-    						//if has lore
-    						List<String> lore = new ArrayList<>();
-    						if(buyableItem.getLore().size() > 0)
-    							for(String line : buyableItem.getLore())
-    								lore.add(ChatColor.translateAlternateColorCodes('&', line));
-    						meta.setLore(lore);
-    						
-    						//set meta
-    						item.setItemMeta(meta);
-    						
-    						//if has enchants
-    						if(buyableItem.getEnchants().size() > 0)
-    						{
-    							for(String enchant : buyableItem.getEnchants())
-    							{
-    								String[] enchantData = enchant.split(" ");
-    								int level = Integer.parseInt(enchantData[1]);
+    						    //set meta
+    						    item.setItemMeta(meta);
+    						    
+    						    //if has enchants
+    						    if(buyableItem.getEnchants().size() > 0)
+    						    {
+    						        for(String enchant : buyableItem.getEnchants())
+    						        {
+    						            String[] enchantData = enchant.split(" ");
+    						            int level = Integer.parseInt(enchantData[1]);
     								
-    								item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0])), level);
-    							}
-    						}
+    						            item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0])), level);
+    						        }
+    						    }
+
+    						    //give item
+    						    player.getInventory().addItem(item);
+   						
+    						    //subtract cost from player level
+    						    player.setLevel(player.getLevel() - buyableItem.getLevelCost());
     						
-    						//give item
-    						player.getInventory().addItem(item);
-    						
-    						//subtract cost from player level
-    						player.setLevel(player.getLevel() - buyableItem.getLevelCost());
-    						
-    						String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
-    						player.sendMessage(ChatColor.GOLD + "" + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getLevelCost() + " levels.");
-    					}
-    					else
-    					{
-    						player.sendMessage(ChatColor.RED + "Your inventory is full!");
-    						return;
-    					}
-    				}
-    				else
-    				{
-    					player.sendMessage(ChatColor.RED + "You do not have enough XP levels to buy! you need " + buyableItem.getLevelCost() + " levels.");
-    						return;
-    					}
-    				}
-    			}
-    		}
-    	}
+    						    String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
+    						    player.sendMessage(ChatColor.GOLD + "" + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getLevelCost() + " levels.");
+                            }
+                            else
+                            {
+                                player.sendMessage(ChatColor.RED + "Your inventory is full!");
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            player.sendMessage(ChatColor.RED + "You do not have enough XP levels to buy! you need " + buyableItem.getLevelCost() + " levels.");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

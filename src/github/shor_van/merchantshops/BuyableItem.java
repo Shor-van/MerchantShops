@@ -23,7 +23,7 @@ public class BuyableItem
      * @param levelCost the cost of the item in xp levels*/
     public BuyableItem(String itemKey, int damage, int amount, int levelCost)
     {
-    	this.itemKey = itemKey;
+        this.itemKey = itemKey;
     	this.damage = damage;
     	this.amount = amount;
     	this.levelCost = levelCost;
