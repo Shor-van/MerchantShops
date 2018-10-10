@@ -24,15 +24,15 @@ public class BuyableItem
     public BuyableItem(String itemKey, int damage, int amount, int levelCost)
     {
         this.itemKey = itemKey;
-    	this.damage = damage;
-    	this.amount = amount;
-    	this.levelCost = levelCost;
-    	
-    	this.displayName = "";
-    	this.skullOwner = "";
-    	this.skullTexture = "";
-    	this.lore = new ArrayList<>();
-    	this.enchants = new ArrayList<>();
+        this.damage = damage;
+        this.amount = amount;
+        this.levelCost = levelCost;
+        
+        this.displayName = "";
+        this.skullOwner = "";
+        this.skullTexture = "";
+        this.lore = new ArrayList<>();
+        this.enchants = new ArrayList<>();
     }
     
     /**Sets the item namespace key for this buyable item
