@@ -302,7 +302,10 @@ public class MerchantShops extends JavaPlugin
     public static int getNumberOfEmptySlotsInInventory(Inventory inventory)
     {
         int count = 0;
-        for(ItemStack itemStack : inventory.getContents())
+        if(inventory.firstEmpty() == -1)
+            return count;
+            
+        for(ItemStack itemStack : inventory.getStorageContents())
             if(itemStack == null || itemStack.getType() == Material.AIR)
                 count++;
         return count;
