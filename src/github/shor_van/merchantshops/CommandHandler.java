@@ -419,6 +419,31 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
+                                    else if(args[4].equalsIgnoreCase("bulkcost"))
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            int bulkCost = 0;
+                                            try 
+                                            { bulkCost = Integer.parseInt(args[5]); } 
+                                            catch(NumberFormatException e) 
+                                            {
+                                                sender.sendMessage(ChatColor.RED + args[5] + " is not a valid number!");
+                                                return true;
+                                            }
+                                            
+                                            buyableItem.setBulkLevelCost(bulkCost);;
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") bulk cost set to " + ChatColor.AQUA + bulkCost);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> bulkcost <bulkcost>");
+                                            return true;
+                                        }
+                                    }
                                     else if(args[4].equalsIgnoreCase("name"))
                                     {
                                         if(args.length >= 6)
@@ -951,6 +976,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     options.add("amount");
                                 if("levelcost".startsWith(args[4].toLowerCase()))
                                     options.add("levelcost");
+                                if("bulkcost".startsWith(args[4].toLowerCase()))
+                                    options.add("bulkcost");
                                 if("name".startsWith(args[4].toLowerCase()))
                                     options.add("name");
                                 if("skullowner".startsWith(args[4].toLowerCase()))
@@ -968,6 +995,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     options.add("damage");
                                     options.add("amount");
                                     options.add("levelcost");
+                                    options.add("bulkcost");
                                     options.add("name");
                                     options.add("skullowner");
                                     options.add("skulltexture");

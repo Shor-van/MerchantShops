@@ -139,6 +139,11 @@ public class Merchant
     		
             //cost info in lore
             lore.add(ChatColor.GREEN + "Level Cost:"+ buyableItem.getLevelCost());
+            
+            //Has a bulk cost
+            if(buyableItem.getBulkLevelCost() > 0)
+                lore.add(ChatColor.GREEN + "Hold sift to buy 5 stacks for:" + buyableItem.getBulkLevelCost());
+            
             meta.setLore(lore);
     		
             //set meta

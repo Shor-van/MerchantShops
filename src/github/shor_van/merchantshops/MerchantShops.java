@@ -8,11 +8,14 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -118,7 +121,10 @@ public class MerchantShops extends JavaPlugin
                             int levelCost = itemData.getInt("level-cost");
                             
                             BuyableItem buyableItem = new BuyableItem(itemKey, damage, amount, levelCost);
-    								
+                            
+                            if(itemData.contains("bulk-level-cost", true))
+                                buyableItem.setBulkLevelCost(itemData.getInt("bulk-level-cost"));
+                            
                             if(itemData.contains("display-name", true))
                                 buyableItem.setDisplayName(itemData.getString("display-name"));
     						
@@ -207,7 +213,11 @@ public class MerchantShops extends JavaPlugin
                 itemSection.set("damage", buyableItem.getDamage());
                 itemSection.set("amount", buyableItem.getAmount());
                 itemSection.set("level-cost", buyableItem.getLevelCost());
-    			
+                
+                //bulk cost if has
+                if(buyableItem.getBulkLevelCost() > 0)
+                    itemSection.set("bulk-level-cost", buyableItem.getBulkLevelCost());
+                
                 //display name if has
                 if(buyableItem.getDisplayName().isEmpty() == false)
                     itemSection.set("display-name", buyableItem.getDisplayName());
@@ -284,5 +294,17 @@ public class MerchantShops extends JavaPlugin
             return false;
         }
         return true;
+    }
+    
+    /**Counts the number of empty slots in the specified inventory.
+     * @param inventory the inventory to count
+     * @return the number of empty/free slots in the inventory.*/
+    public static int getNumberOfEmptySlotsInInventory(Inventory inventory)
+    {
+        int count = 0;
+        for(ItemStack itemStack : inventory.getContents())
+            if(itemStack == null || itemStack.getType() == Material.AIR)
+                count++;
+        return count;
     }
 }

@@ -145,15 +145,49 @@ public class EventListener implements Listener
                                         item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0].toLowerCase())), level);
                                     }
                                 }
-
-                                //give item
-                                player.getInventory().addItem(item);
                                 
-                                //subtract cost from player level
-                                player.setLevel(player.getLevel() - buyableItem.getLevelCost());
+                                //Bulk buying
+                                if(buyableItem.getBulkLevelCost() > 0 && event.isShiftClick())
+                                {
+                                    //check if has enough levels
+                                    if(player.getLevel() >= buyableItem.getBulkLevelCost())
+                                    {
+                                        int freeSlots = MerchantShops.getNumberOfEmptySlotsInInventory(player.getInventory());
+                                        if(freeSlots >= 5)
+                                        {
+                                          //give items
+                                            for(int i = 0; i < 5; i++)
+                                                player.getInventory().addItem(new ItemStack(item));//give items
+                                            
+                                            //subtract cost from player level
+                                            player.setLevel(player.getLevel() - buyableItem.getBulkLevelCost());
+                                            
+                                            String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
+                                            player.sendMessage(ChatColor.GOLD + "5 stacks of " + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getBulkLevelCost() + " levels.");
+                                        }
+                                        else
+                                        {
+                                            player.sendMessage(ChatColor.RED + "You do not have enough free slots in your inventory!");
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        player.sendMessage(ChatColor.RED + "You do not have enough XP levels to buy! you need " + buyableItem.getBulkLevelCost() + " levels.");
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    //give item
+                                    player.getInventory().addItem(item);
                                 
-                                String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
-                                player.sendMessage(ChatColor.GOLD + "" + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getLevelCost() + " levels.");
+                                    //subtract cost from player level
+                                    player.setLevel(player.getLevel() - buyableItem.getLevelCost());
+                                
+                                    String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
+                                    player.sendMessage(ChatColor.GOLD + "" + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getLevelCost() + " levels.");
+                                }
                             }
                             else
                             {
