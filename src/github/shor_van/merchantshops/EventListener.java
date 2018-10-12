@@ -60,7 +60,7 @@ public class EventListener implements Listener
         for(Merchant merchant : ((MerchantShops) plugin).getMerchants())
         {
             //is inventory merchant inventory 
-            if(inventory.getName().equals(merchant.getMerchantEntity().getCustomName()))
+            if(inventory.getName().equals(merchant.getMerchantName()))
             {
                 //cancel event
                 event.setCancelled(true);

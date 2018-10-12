@@ -53,15 +53,15 @@ public class Merchant
     	
         //set inventory size
         if(startIdx > 0)
-            buyMenu = Bukkit.createInventory(null, 36, getMerchantEntity().getCustomName());
+            buyMenu = Bukkit.createInventory(null, 36, name);
         else if(sellItems.size() <= 9)
-            buyMenu = Bukkit.createInventory(null, 9, getMerchantEntity().getCustomName());
+            buyMenu = Bukkit.createInventory(null, 9, name);
         else if(sellItems.size() <= 18)
-    	    buyMenu = Bukkit.createInventory(null, 18, getMerchantEntity().getCustomName());
+    	    buyMenu = Bukkit.createInventory(null, 18, name);
     	else if(sellItems.size() <= 27)
-    	    buyMenu = Bukkit.createInventory(null, 27, getMerchantEntity().getCustomName());
+    	    buyMenu = Bukkit.createInventory(null, 27, name);
     	else
-    	    buyMenu = Bukkit.createInventory(null, 36, getMerchantEntity().getCustomName());
+    	    buyMenu = Bukkit.createInventory(null, 36, name);
     	
         //if size greater then inventory create next page button
         if(sellItems.size() - startIdx > 36)
@@ -277,6 +277,10 @@ public class Merchant
     /**Gets the name of the merchant entity
      * @return the name of the merchant entity*/
     public String getMerchantName() { return name; }
+    
+    /**Gets location of the merchant entity
+     * @return the location of the merchant entity in the world*/
+    public Location getLocation() { return location; }
     
     /**Gets the merchant entity
      * @return the merchant entity*/

@@ -51,7 +51,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             {
                                 Player playerSender = (Player)sender;
                                 Location location = null;
-                                String displayName = ChatColor.BOLD + "NOT NAMED!";
+                                String displayName = ChatColor.BOLD  + "" + ChatColor.RED +  "NOT NAMED!";
                                 
                                 //Validate/parse
                                 try
@@ -171,10 +171,17 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             {
                                 if(args.length >= 4)
                                 {
-                                    merchant.getMerchantEntity().setCustomName(ChatColor.translateAlternateColorCodes('&', args[3].replace("_", " ")));
-                                    sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " name changed to " + ChatColor.AQUA + merchant.getMerchantEntity().getCustomName().replace("_", " ") + ChatColor.GOLD + ".");
-                                    ((MerchantShops) plugin).saveMerchants();
-                                    return true;
+                                    if(merchant.setMerchantName(ChatColor.translateAlternateColorCodes('&', args[3].replace("_", " "))) == true)
+                                    {
+                                        sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " name changed to " + ChatColor.AQUA + merchant.getMerchantName() + ChatColor.GOLD + ".");
+                                        ((MerchantShops) plugin).saveMerchants();
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        sender.sendMessage(ChatColor.RED + "Mechant: " + merchantId + " could not be moved, is entity dead?");
+                                        return true;
+                                    }
                                 }
                                 else
                                 {
@@ -643,7 +650,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                             else if(args[2].equalsIgnoreCase("listitems"))
                             {
-                                sender.sendMessage( ChatColor.AQUA + "Listing all items sold by merchant " + ChatColor.GOLD + merchant.getMerchantEntity().getCustomName() + ChatColor.AQUA + "(" + ChatColor.GOLD + merchantId + ChatColor.AQUA + ")....");
+                                sender.sendMessage( ChatColor.AQUA + "Listing all items sold by merchant " + ChatColor.GOLD + merchant.getMerchantName() + ChatColor.AQUA + "(" + ChatColor.GOLD + merchantId + ChatColor.AQUA + ")....");
                                 sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
     							
                                 //if no items for sale
@@ -691,10 +698,10 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                         {
                             Merchant merchant = ((MerchantShops) plugin).getMerchants().get(i);
                             sender.sendMessage(ChatColor.AQUA + "ID: " + ChatColor.GOLD + i + 
-                                    ChatColor.AQUA + " Name: " + ChatColor.GOLD + merchant.getMerchantEntity().getCustomName() + 
-                                    ChatColor.AQUA + " posX: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getX() +
-                                    ChatColor.AQUA + " posY: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getY() +
-                                    ChatColor.AQUA + " posZ: " + ChatColor.GOLD + merchant.getMerchantEntity().getLocation().getZ());
+                                    ChatColor.AQUA + " Name: " + ChatColor.GOLD + merchant.getMerchantName() + 
+                                    ChatColor.AQUA + " posX: " + ChatColor.GOLD + merchant.getLocation().getX() +
+                                    ChatColor.AQUA + " posY: " + ChatColor.GOLD + merchant.getLocation().getY() +
+                                    ChatColor.AQUA + " posZ: " + ChatColor.GOLD + merchant.getLocation().getZ());
                         }
                         return true;
                     }
