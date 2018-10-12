@@ -198,10 +198,16 @@ public class Merchant
         else
             Bukkit.getLogger().warning("[Merchant Shops] Merchant entity could not be found while trying to remove it, assuming its dead.");
     	
+        //Check for players viewing merchant inventory if so close it
+        for(Player player : Bukkit.getOnlinePlayers())
+            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName() == name)
+                player.getOpenInventory().close();
+                
         sellItems.clear();
         sellItems = null;
         location = null;
-    	
+    	name = null;
+        
         if(wasUnloaded == true)
             chunk.unload(true);
     }
@@ -263,6 +269,11 @@ public class Merchant
         
         getMerchantEntity().setCustomName(ChatColor.translateAlternateColorCodes('&', name));
         this.name = ChatColor.translateAlternateColorCodes('&', name);
+        
+        //Check for players viewing merchant inventory if so close the inventory, I would have liked to update the name but it looks like its not doable
+        for(Player player : Bukkit.getOnlinePlayers())
+            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName() == name)
+                player.getOpenInventory().close();;
         
         if(wasUnloaded == true)
             chunk.unload(true);
