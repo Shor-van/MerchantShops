@@ -23,7 +23,7 @@ public class Merchant
 {
     public static final int displaySize = 27; //The max amount of items items to show if we would go over the max size of the inventory
     public static final Material buttonMaterial = Material.SPECTRAL_ARROW; //The material of the item use by the navigation buttons
-    public static final String prevPageLoreToken = "Go to the back page"; //The lore line used by the prev page navigation button
+    public static final String prevPageLoreToken = "Go to the previous page"; //The lore line used by the prev page navigation button
     public static final String nextPageLoreToken = "Go to the next page"; //The lore line used by the next page navigation button
     
     private String name; //The name of the merchant
@@ -140,11 +140,11 @@ public class Merchant
                     lore.add(ChatColor.translateAlternateColorCodes('&', line));
     		
             //cost info in lore
-            lore.add(ChatColor.GREEN + "Level Cost:" + buyableItem.getLevelCost());
+            lore.add(ChatColor.GOLD + "Buy " + ChatColor.GREEN + buyableItem.getAmount() + ChatColor.GOLD + " for " + ChatColor.GREEN + buyableItem.getLevelCost() + ChatColor.GOLD + " levels");
             
             //Has a bulk cost
             if(buyableItem.getBulkLevelCost() > 0)
-                lore.add(ChatColor.GREEN + "Hold sHift to buy 5 stacks for:" + buyableItem.getBulkLevelCost());
+                lore.add(ChatColor.GOLD + "Hold sHift to buy " + ChatColor.GREEN + (buyableItem.getAmount() * 5) + ChatColor.GOLD + " for " + ChatColor.GREEN + buyableItem.getBulkLevelCost() + ChatColor.GOLD + " levels");
             
             meta.setLore(lore);
     		
