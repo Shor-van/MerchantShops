@@ -200,7 +200,7 @@ public class Merchant
     	
         //Check for players viewing merchant inventory if so close it
         for(Player player : Bukkit.getOnlinePlayers())
-            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName() == name)
+            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName().endsWith(name))
                 player.getOpenInventory().close();
                 
         sellItems.clear();
@@ -272,7 +272,7 @@ public class Merchant
         
         //Check for players viewing merchant inventory if so close the inventory, I would have liked to update the name but it looks like its not doable
         for(Player player : Bukkit.getOnlinePlayers())
-            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName() == name)
+            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName().equals(name))
                 player.getOpenInventory().close();;
         
         if(wasUnloaded == true)
