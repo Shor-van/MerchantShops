@@ -51,7 +51,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             {
                                 Player playerSender = (Player)sender;
                                 Location location = null;
-                                String displayName = ChatColor.BOLD  + "" + ChatColor.RED +  "NOT NAMED!";
+                                String displayName = ChatColor.RED +  "NOT NAMED!";
                                 
                                 //Validate/parse
                                 try

@@ -86,7 +86,7 @@ public class MerchantShops extends JavaPlugin
                 if(merchantData.contains("position", true) && merchantData.contains("sells", true))//Validation
                 {
                     //name
-                    String displayName = merchantData.getString("name", ChatColor.BOLD  + "" + ChatColor.RED +  "NOT NAMED!"); 
+                    String displayName = merchantData.getString("name", ChatColor.RED +  "NOT NAMED!"); 
     				
                     //get position data
                     String worldName;
