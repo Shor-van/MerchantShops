@@ -165,7 +165,7 @@ public class MerchantShops extends JavaPlugin
                         if(entity.getType() == merchantEntityType && entity.getCustomName().equals(merchantEntity.getCustomName()))
                             { entity.remove(); this.getLogger().info("Found duplicate entity for " + merchantEntry + " removing it."); }
     				
-                    this.merchants.add(new Merchant(merchantEntity.getUniqueId(), location, merchantItems));
+                    this.merchants.add(new Merchant(merchantEntity.getUniqueId(), ChatColor.translateAlternateColorCodes('&', displayName), location, merchantItems));
                     loaded++;
                 }
                 else
@@ -254,7 +254,7 @@ public class MerchantShops extends JavaPlugin
         ((LivingEntity) merchantEntity).setAI(false);
     	
         List<BuyableItem> buyableItems = new ArrayList<>();
-        merchants.add(new Merchant(merchantEntity.getUniqueId(), location, buyableItems));
+        merchants.add(new Merchant(merchantEntity.getUniqueId(), ChatColor.translateAlternateColorCodes('&', displayName), location, buyableItems));
     	
         saveMerchants();
     }

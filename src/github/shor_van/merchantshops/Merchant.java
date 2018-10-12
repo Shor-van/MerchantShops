@@ -26,6 +26,7 @@ public class Merchant
     public static final String prevPageLoreToken = "Go to the back page"; //The lore line used by the prev page navigation button
     public static final String nextPageLoreToken = "Go to the next page"; //The lore line used by the next page navigation button
     
+    private String name; //The name of the merchant
     private UUID entityUUID; //The UUID of the merchant entity
     private Location location; //The location of the merchant entity
     private List<BuyableItem> sellItems; //The items that the merchant sells
@@ -34,9 +35,10 @@ public class Merchant
      * @param entityUUID the UUID of the entity that physical represents the merchant in the world
      * @param location the location of the entity
      * @param sellItems the list of items that the merchant sells*/
-    public Merchant(UUID entityUUID, Location location, List<BuyableItem> sellItems)
+    public Merchant(UUID entityUUID, String displayName, Location location, List<BuyableItem> sellItems)
     {
         this.entityUUID = entityUUID;
+        this.name = displayName;
         this.sellItems = sellItems;
         this.location = location;
     }
@@ -236,9 +238,45 @@ public class Merchant
         return true;
     }
     
+    /**Sets the merchant's display name. Do not use Entity.setCustomName(name) as we need to update the merchants name in this object
+     * @param name the new name of the merchant
+     * @return true if the name of the merchant entity was modified else if it failed returns false*/
+    public boolean setMerchantName(String name)
+    {
+        //if not loaded try to load chunk
+        Chunk chunk = null;
+        boolean wasUnloaded = false;
+        if(getMerchantEntity() == null)
+        {
+            chunk = this.location.getChunk();
+            if(chunk.isLoaded() == false)
+            {
+                wasUnloaded = true;
+                chunk.load(false);
+            }
+        }
+        
+        //if still null
+        if(getMerchantEntity() == null) { 
+            Bukkit.getLogger().warning("[Merchant Shops] Merchant entity could not be found while tring to change its name, is it dead?"); return false;
+        }
+        
+        getMerchantEntity().setCustomName(ChatColor.translateAlternateColorCodes('&', name));
+        this.name = ChatColor.translateAlternateColorCodes('&', name);
+        
+        if(wasUnloaded == true)
+            chunk.unload(true);
+        
+        return true;
+    }
+    
     /**Gets the merchant entity's UUID
      * @return the physical entity's UUID*/
     public UUID getMerchantEntityUUID() { return entityUUID; }
+    
+    /**Gets the name of the merchant entity
+     * @return the name of the merchant entity*/
+    public String getMerchantName() { return name; }
     
     /**Gets the merchant entity
      * @return the merchant entity*/
