@@ -25,11 +25,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**Listens for game events to trigger*/
 public class EventListener implements Listener
 {	
-    private final JavaPlugin plugin; //the plugin
+    private final JavaPlugin plugin; //Reference to the base plugin, should not be null
     
+    /**Creates a new instance of the event listener, there should only be one
+     * @param plugin the plugin, this should be of type MerchantShops*/
     public EventListener(JavaPlugin plugin)
     {
-        this.plugin = plugin;
+        this.plugin = plugin;    
     }
     
     /**Triggered when a player right clicks on a entity
@@ -147,27 +149,26 @@ public class EventListener implements Listener
                                 }
                                 
                                 //Bulk buying
-                                if(buyableItem.getBulkLevelCost() > 0 && event.isShiftClick())
+                                if(buyableItem.getBulkLevelCost() > 0 && buyableItem.getBulkBuyMutiplier() > 0 && event.isShiftClick())
                                 {
                                     //check if has enough levels
                                     if(player.getLevel() >= buyableItem.getBulkLevelCost())
                                     {
-                                        int freeSlots = MerchantShops.getNumberOfEmptySlotsInInventory(player.getInventory());
-                                        if(freeSlots >= 5)
+                                        if(MerchantShops.canItemFitInInventory(player.getInventory(), item))
                                         {
                                           //give items
-                                            for(int i = 0; i < 5; i++)
+                                            for(int i = 0; i < buyableItem.getBulkBuyMutiplier(); i++)
                                                 player.getInventory().addItem(new ItemStack(item));//give items
                                             
                                             //subtract cost from player level
                                             player.setLevel(player.getLevel() - buyableItem.getBulkLevelCost());
                                             
                                             String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
-                                            player.sendMessage(ChatColor.GOLD + "5 stacks of " + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getBulkLevelCost() + " levels.");
+                                            player.sendMessage(ChatColor.GOLD + "" + (buyableItem.getAmount() * buyableItem.getBulkBuyMutiplier()) + " of " + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getBulkLevelCost() + " levels.");
                                         }
                                         else
                                         {
-                                            player.sendMessage(ChatColor.RED + "You do not have enough free slots in your inventory!");
+                                            player.sendMessage(ChatColor.RED + "You do not have enough space in your inventory!");
                                             return;
                                         }
                                     }

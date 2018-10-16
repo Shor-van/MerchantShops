@@ -86,7 +86,7 @@ public class MerchantShops extends JavaPlugin
                 if(merchantData.contains("position", true) && merchantData.contains("sells", true))//Validation
                 {
                     //name
-                    String displayName = merchantData.getString("name", ChatColor.RED +  "NOT NAMED!"); 
+                    String displayName = merchantData.getString("name", ChatColor.RED + "NOT NAMED!"); 
     				
                     //get position data
                     String worldName;
@@ -124,6 +124,9 @@ public class MerchantShops extends JavaPlugin
                             
                             if(itemData.contains("bulk-level-cost", true))
                                 buyableItem.setBulkLevelCost(itemData.getInt("bulk-level-cost"));
+                            
+                            if(itemData.contains("bulk-multiplier", true))
+                                buyableItem.setBulkBuyMutiplier(itemData.getInt("bulk-multiplier"));
                             
                             if(itemData.contains("display-name", true))
                                 buyableItem.setDisplayName(itemData.getString("display-name"));
@@ -218,6 +221,10 @@ public class MerchantShops extends JavaPlugin
                 if(buyableItem.getBulkLevelCost() > 0)
                     itemSection.set("bulk-level-cost", buyableItem.getBulkLevelCost());
                 
+                //bulk multiplier if has
+                if(buyableItem.getBulkLevelCost() > 0)
+                    itemSection.set("bulk-multiplier", buyableItem.getBulkBuyMutiplier());
+                
                 //display name if has
                 if(buyableItem.getDisplayName().isEmpty() == false)
                     itemSection.set("display-name", buyableItem.getDisplayName());
@@ -309,5 +316,48 @@ public class MerchantShops extends JavaPlugin
             if(itemStack == null || itemStack.getType() == Material.AIR)
                 count++;
         return count;
+    }
+    
+    /**Checks if the specified item stack can fit in the specified inventory.
+     * @param inventory the inventory to check if the item would fit in
+     * @param item the item stack to check if it would fit
+     * @return true if the item stack can fit in the specified inventory, false if it can not fit.*/
+    public static boolean canItemFitInInventory(Inventory inventory, ItemStack item)
+    {
+        int amountLeft = item.getAmount();
+
+        // First check if it can merge with existing stacks
+        ItemStack[] itemsInInv = inventory.getStorageContents();
+        for (int i = 0; i < itemsInInv.length; i++)
+        {
+            if (itemsInInv[i] == null)
+                continue;
+
+            if (itemsInInv[i].isSimilar(item) == true)
+            {
+                if (itemsInInv[i].getAmount() < itemsInInv[i].getMaxStackSize())
+                {
+                    if (itemsInInv[i].getAmount() + amountLeft <= itemsInInv[i].getMaxStackSize()) // Check if stack would fit in itemstack
+                        return true;
+                    else // If overflows take what is need
+                        amountLeft = amountLeft - (itemsInInv[i].getMaxStackSize() - itemsInInv[i].getAmount());
+                }
+            }
+        }
+
+        // If amount left check if inventor has free slots
+        int freeSlots = getNumberOfEmptySlotsInInventory(inventory);
+        if (amountLeft > 0 && freeSlots != 0)
+        {
+            for(int i = 1; i <= freeSlots; i++)
+            {
+                if(amountLeft <= item.getMaxStackSize()) //Left can fit in one stack
+                    return true;
+                else //get overflow
+                    amountLeft = amountLeft - item.getMaxStackSize();
+            }
+        }
+        
+        return false;
     }
 }

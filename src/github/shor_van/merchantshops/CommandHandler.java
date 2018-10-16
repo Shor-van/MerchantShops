@@ -451,6 +451,31 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
+                                    else if(args[4].equalsIgnoreCase("bulkmultiplier")) //Change the amount that the item is multiplied by when buying in bulk
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            int bulkmultiplier = 0;
+                                            try 
+                                            { bulkmultiplier = Integer.parseInt(args[5]); } 
+                                            catch(NumberFormatException e) 
+                                            {
+                                                sender.sendMessage(ChatColor.RED + args[5] + " is not a valid number!");
+                                                return true;
+                                            }
+                                            
+                                            buyableItem.setBulkBuyMutiplier(bulkmultiplier);
+                                            ((MerchantShops) plugin).saveMerchants();
+                                            
+                                            sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") bulk multiplier set to " + ChatColor.AQUA + bulkmultiplier);
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> bulkcost <bulkcost>");
+                                            return true;
+                                        }
+                                    }
                                     else if(args[4].equalsIgnoreCase("name")) //Change the display name of the specified item
                                     {
                                         if(args.length >= 6)
@@ -993,6 +1018,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     options.add("levelcost");
                                 if("bulkcost".startsWith(args[4].toLowerCase()))
                                     options.add("bulkcost");
+                                if("bulkmultiplier".startsWith(args[4].toLowerCase()))
+                                    options.add("bulkmultiplier");
                                 if("name".startsWith(args[4].toLowerCase()))
                                     options.add("name");
                                 if("skullowner".startsWith(args[4].toLowerCase()))
@@ -1011,6 +1038,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     options.add("amount");
                                     options.add("levelcost");
                                     options.add("bulkcost");
+                                    options.add("bulkmultiplier");
                                     options.add("name");
                                     options.add("skullowner");
                                     options.add("skulltexture");
