@@ -19,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**Handles the /shop command for the merchant shops plugin*/
 public class CommandHandler implements CommandExecutor, TabCompleter
 {
-    private final JavaPlugin plugin; //The plugin
+    private final JavaPlugin plugin; //Reference to the base plugin, should not be null
     
     /**Creates a new instance of the command handler, there should only be one
      * @param plugin the plugin, this should be of type MerchantShops*/
@@ -43,7 +43,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
             {
                 if(args.length >= 1)
                 {
-                    if(args[0].equalsIgnoreCase("addmerchant"))
+                    if(args[0].equalsIgnoreCase("addmerchant")) //Add a new merchant at the specified location
                     {
                         if(sender instanceof Player)
                         {
@@ -51,7 +51,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             {
                                 Player playerSender = (Player)sender;
                                 Location location = null;
-                                String displayName = ChatColor.RED +  "NOT NAMED!";
+                                String displayName = ChatColor.RED + "NOT NAMED!";
                                 
                                 //Validate/parse
                                 try
@@ -107,7 +107,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                         }
                     }
-                    else if(args[0].equalsIgnoreCase("removemerchant"))
+                    else if(args[0].equalsIgnoreCase("removemerchant")) //Remove the specified merchant
                     {
                         if(args.length >= 2)
                         {
@@ -143,7 +143,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             return true;
                         }
                     }
-                    else if(args[0].equalsIgnoreCase("merchant")) //Add new item to the list
+                    else if(args[0].equalsIgnoreCase("merchant")) //Modify the specified merchant
                     {
                         if(args.length >= 3)
                         {
@@ -167,7 +167,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                             
                             //options
-                            if(args[2].equalsIgnoreCase("name"))
+                            if(args[2].equalsIgnoreCase("name")) //Change the display name of the merchant
                             {
                                 if(args.length >= 4)
                                 {
@@ -189,7 +189,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     return true;
                                 }
                             }
-                            else if(args[2].equalsIgnoreCase("position"))
+                            else if(args[2].equalsIgnoreCase("position")) //Change the position of the merchants
                             {
                                 if(sender instanceof Player)
                                 {
@@ -248,7 +248,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     }
                                 }
                             }
-                            else if(args[2].equalsIgnoreCase("additem"))
+                            else if(args[2].equalsIgnoreCase("additem")) //add a new item that the merchant sells
                             {
                                 if(args.length >= 7)
                                 {
@@ -280,7 +280,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     return true;
                                 }
                             }
-                            else if(args[2].equalsIgnoreCase("removeitem"))
+                            else if(args[2].equalsIgnoreCase("removeitem")) //Remove a item that the merchant sells
                             {
                                 if(args.length >= 4)
                                 {
@@ -310,7 +310,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     return true;
                                 }
                             }
-                            else if(args[2].equalsIgnoreCase("edititem"))
+                            else if(args[2].equalsIgnoreCase("edititem")) //edit a item that the merchant sells
                             {
                                 if(args.length >= 5)
                                 {
@@ -334,7 +334,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     }
                                     
                                     //options
-                                    if(args[4].equalsIgnoreCase("itemKey"))
+                                    if(args[4].equalsIgnoreCase("itemKey")) //Change the specified item's itemkey(the type of item)
                                     {
                                         if(args.length >= 6)
                                         {
@@ -351,7 +351,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("damage"))
+                                    else if(args[4].equalsIgnoreCase("damage")) //Changes the specified item's damage
                                     {
                                         if(args.length >= 6)
                                         {
@@ -376,7 +376,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("amount"))
+                                    else if(args[4].equalsIgnoreCase("amount")) //Change the amount the player gets when buying the specified item
                                     {
                                         if(args.length >= 6)
                                         {
@@ -401,7 +401,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("levelcost"))
+                                    else if(args[4].equalsIgnoreCase("levelcost")) //Change the amount of levels the specified item costs
                                     {
                                         if(args.length >= 6)
                                         {
@@ -426,7 +426,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("bulkcost"))
+                                    else if(args[4].equalsIgnoreCase("bulkcost")) //Change the amount of levels the specified item costs when buying in bulk
                                     {
                                         if(args.length >= 6)
                                         {
@@ -451,7 +451,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("name"))
+                                    else if(args[4].equalsIgnoreCase("name")) //Change the display name of the specified item
                                     {
                                         if(args.length >= 6)
                                         {
@@ -468,7 +468,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("skullowner"))
+                                    else if(args[4].equalsIgnoreCase("skullowner")) //Change the UUID of the player that owns the skull
                                     {
                                         if(args.length >= 6)
                                         {
@@ -477,6 +477,10 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             ((MerchantShops) plugin).saveMerchants();
                                             
                                             sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") skull owner set to " + ChatColor.AQUA + skullOwner);
+                                            
+                                          //Warn if not skull that value is useless
+                                            if(buyableItem.getItemKey().equals("player_head") == false)
+                                                sender.sendMessage(ChatColor.GRAY + "[WARNING] Item: " + ChatColor.DARK_GRAY + itemId + ChatColor.GRAY + " is not set to type skull, this value is ignored if it is not set to item type player_head");
                                             return true;
                                         }
                                         else
@@ -484,8 +488,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> skullowner <UUID>");
                                             return true;
                                         }
-                                    }
-                                    else if(args[4].equalsIgnoreCase("skulltexture"))
+                                    }//32 24 34
+                                    else if(args[4].equalsIgnoreCase("skulltexture")) //Change the texture of the skull item
                                     {
                                         if(args.length >= 6)
                                         {
@@ -494,6 +498,10 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             ((MerchantShops) plugin).saveMerchants();
                                             
                                             sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") skull texture set to " + ChatColor.AQUA + skullTexture);
+                                            
+                                            //Warn if not skull that value is useless
+                                            if(buyableItem.getItemKey().equals("player_head") == false)
+                                                sender.sendMessage(ChatColor.GRAY + "[WARNING] Item: " + ChatColor.DARK_GRAY + itemId + ChatColor.GRAY + " is not set to type skull, this value is ignored if it is not set to item type player_head");
                                             return true;
                                         }
                                         else
@@ -502,7 +510,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("lore"))
+                                    else if(args[4].equalsIgnoreCase("lore")) //Change the lore of the specified item
                                     {
                                         if(args.length >= 6)
                                         {
@@ -521,11 +529,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
-                                    else if(args[4].equalsIgnoreCase("enchants"))
+                                    else if(args[4].equalsIgnoreCase("enchants")) //Change the enchantments of the specified item
                                     {
                                         if(args.length >= 6)
                                         {
-                                            if(args[5].equalsIgnoreCase("add"))
+                                            if(args[5].equalsIgnoreCase("add")) //Add the specified enchant to the specified item
                                             {
                                                 if(args.length >= 7)
                                                 {
@@ -533,7 +541,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                     String enchantKey = args[6];
                                                     if(buyableItem.hasEnchant(enchantKey) == false)
                                                     {
-                                                        //Specified level
+                                                        //Specified a level
                                                         if(args.length >= 8)
                                                         {
                                                             try 
@@ -563,7 +571,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                     return true;
                                                 }
                                             }
-                                            else if(args[5].equalsIgnoreCase("remove"))
+                                            else if(args[5].equalsIgnoreCase("remove")) //remove the specified enchant from the specified item
                                             {
                                                 if(args.length >= 7)
                                                 {
@@ -589,7 +597,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                     return true;
                                                 }
                                             }
-                                            else if(args[5].equalsIgnoreCase("setlevel"))
+                                            else if(args[5].equalsIgnoreCase("setlevel")) //Change the specified enchant's level of the specified item
                                             {
                                                 if(args.length >= 8)
                                                 {
@@ -648,7 +656,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     return true;
                                 }
                             }
-                            else if(args[2].equalsIgnoreCase("listitems"))
+                            else if(args[2].equalsIgnoreCase("listitems")) //List all the items that the merchant sells
                             {
                                 sender.sendMessage( ChatColor.AQUA + "Listing all items sold by merchant " + ChatColor.GOLD + merchant.getMerchantName() + ChatColor.AQUA + "(" + ChatColor.GOLD + merchantId + ChatColor.AQUA + ")....");
                                 sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
@@ -681,7 +689,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             return true;
     					}
                     }
-                    else if(args[0].equalsIgnoreCase("listmerchants"))
+                    else if(args[0].equalsIgnoreCase("listmerchants")) //Lists all the active merchants
                     {
                         sender.sendMessage( ChatColor.AQUA + "Listing all registered merchants....");
                         sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
@@ -705,14 +713,14 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                         }
                         return true;
                     }
-                    else if(args[0].equalsIgnoreCase("reload"))
+                    else if(args[0].equalsIgnoreCase("reload")) //Reloads the plugin
                     {
                         //plugin.getServer().getPluginManager().disablePlugin(plugin);  
                         //plugin.getServer().getPluginManager().enablePlugin(plugin);
                         sender.sendMessage(ChatColor.RED + "Not enabled.");
                         return true;
                     }
-                    else if(args[0].equalsIgnoreCase("help")) //Shop help command
+                    else if(args[0].equalsIgnoreCase("help")) //Shows all the shop commands
                     {
                         sender.sendMessage("Shop coammnds" + ChatColor.GOLD + " (" + ChatColor.AQUA + "<requierd>" + ChatColor.DARK_AQUA + " [optional]" + ChatColor.GOLD + ")");
                         sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------");
