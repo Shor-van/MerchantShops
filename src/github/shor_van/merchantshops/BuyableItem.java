@@ -9,8 +9,9 @@ public class BuyableItem
     private String itemKey; //The item's namespace key
     private int damage; //The amount of damage the item has
     private int amount; //The amount of the item the player gets
-    private int levelCost; //The amount of xp levels tha item costs
+    private int levelCost; //The amount of xp levels that item costs
     private int bulkLevelCost; //The amount of levels that buying in bulk costs
+    private int bulkBuyMultiplier; //The amount that the single buy amount is multiplied by when the player is buying in bulk
     private String displayName; //The item's custom display name
     private String skullOwner; //The UUID of the player who owns the skull
     private String skullTexture; //Base64 string of the texture used by the skull
@@ -30,6 +31,7 @@ public class BuyableItem
         this.levelCost = levelCost;
         
         this.bulkLevelCost = 0;
+        this.bulkBuyMultiplier = 1;
         this.displayName = "";
         this.skullOwner = "";
         this.skullTexture = "";
@@ -102,9 +104,13 @@ public class BuyableItem
      * @param levelCost the amount of levels the item costs*/
     public void setLevelCost(int levelCost) { this.levelCost = levelCost; }
     
-    /**Gets the amount of xp levels the item costs to buy in bulk
-     * @return the amount of levels the item costs to buy in bulk*/
+    /**Sets the amount of xp levels the item costs to buy in bulk
+     * @param bulkLevelCost the amount of levels the item costs to buy in bulk*/
     public void setBulkLevelCost(int bulkLevelCost) { this.bulkLevelCost = bulkLevelCost; }
+    
+    /**Sets the amount that the single buy amount is multiplied by when the player is buying in bulk
+     * @param bulkBuyMultiplier the amount that the single buy amount is multiplied by when buying in bulk*/
+    public void setBulkBuyMutiplier(int bulkBuyMultiplier) { this.bulkBuyMultiplier = bulkBuyMultiplier; }
     
     /**Sets the item's custom display name
      * @param displayName the custom display name of the item*/
@@ -137,6 +143,10 @@ public class BuyableItem
     /**Gets the amount of xp levels it costs to buy in bulk
      * @return the amount of levels it costs to buy in bulk*/
     public int getBulkLevelCost() { return bulkLevelCost; }
+    
+    /**Gets the amount that the single buy amount is multiplied by when the player is buying in bulk
+     * @return the amount that the single buy amount is multiplied by when buying in bulk*/
+    public int getBulkBuyMutiplier() { return bulkBuyMultiplier; }
     
     /**Gets the item's custom display name if it has one
      * @return the item's custom display name, if it does not have one returns ""*/
