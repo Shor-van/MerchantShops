@@ -472,7 +472,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                         }
                                         else
                                         {
-                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> bulkcost <bulkcost>");
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> bulkmultiplier <multiplier>");
                                             return true;
                                         }
                                     }
