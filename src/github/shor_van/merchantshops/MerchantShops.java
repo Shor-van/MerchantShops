@@ -321,10 +321,11 @@ public class MerchantShops extends JavaPlugin
     /**Checks if the specified item stack can fit in the specified inventory.
      * @param inventory the inventory to check if the item would fit in
      * @param item the item stack to check if it would fit
+     * @param amount the amount of the item, this is here as sometimes you might want to specify a amount higher then the max stack size
      * @return true if the item stack can fit in the specified inventory, false if it can not fit.*/
-    public static boolean canItemFitInInventory(Inventory inventory, ItemStack item)
+    public static boolean canItemFitInInventory(Inventory inventory, ItemStack item, int amount)
     {
-        int amountLeft = item.getAmount();
+        int amountLeft = amount;
 
         // First check if it can merge with existing stacks
         ItemStack[] itemsInInv = inventory.getStorageContents();

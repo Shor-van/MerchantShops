@@ -154,7 +154,7 @@ public class EventListener implements Listener
                                     //check if has enough levels
                                     if(player.getLevel() >= buyableItem.getBulkLevelCost())
                                     {
-                                        if(MerchantShops.canItemFitInInventory(player.getInventory(), item))
+                                        if(MerchantShops.canItemFitInInventory(player.getInventory(), item, buyableItem.getAmount() * buyableItem.getBulkBuyMutiplier()))
                                         {
                                           //give items
                                             for(int i = 0; i < buyableItem.getBulkBuyMutiplier(); i++)
