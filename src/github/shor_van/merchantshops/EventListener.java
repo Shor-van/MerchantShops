@@ -164,7 +164,7 @@ public class EventListener implements Listener
                                             player.setLevel(player.getLevel() - buyableItem.getBulkLevelCost());
                                             
                                             String name = item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name().replace("_", " ").toLowerCase();
-                                            player.sendMessage(ChatColor.GOLD + "" + (buyableItem.getAmount() * buyableItem.getBulkBuyMutiplier()) + " of " + buyableItem.getAmount() + " " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getBulkLevelCost() + " levels.");
+                                            player.sendMessage(ChatColor.GOLD + "" + (buyableItem.getAmount() * buyableItem.getBulkBuyMutiplier()) + " of " + name + ChatColor.GOLD + " purchsed for " + buyableItem.getBulkLevelCost() + " levels.");
                                         }
                                         else
                                         {
