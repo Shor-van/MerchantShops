@@ -144,7 +144,7 @@ public class Merchant
             
             //Has a bulk cost
             if(buyableItem.getBulkLevelCost() > 0)
-                lore.add(ChatColor.GOLD + "Hold sHift to buy " + ChatColor.GREEN + (buyableItem.getAmount() * 5) + ChatColor.GOLD + " for " + ChatColor.GREEN + buyableItem.getBulkLevelCost() + ChatColor.GOLD + " levels");
+                lore.add(ChatColor.GOLD + "Hold sHift to buy " + ChatColor.GREEN + (buyableItem.getAmount() * buyableItem.getBulkBuyMutiplier()) + ChatColor.GOLD + " for " + ChatColor.GREEN + buyableItem.getBulkLevelCost() + ChatColor.GOLD + " levels");
             
             meta.setLore(lore);
     		
