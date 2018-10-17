@@ -112,8 +112,11 @@ public class BuyableItem
     /**Removes all the item's enchants*/
     public void removeEnchants()
     {
-        enchants.clear();
-        enchants = null;
+        if(enchants != null)
+        {
+            enchants.clear();
+            enchants = null;
+        }
     }
     
     /**Adds a list of strings to the item's lore, each entry in the list is a different line of lore
@@ -138,9 +141,12 @@ public class BuyableItem
     
     /**Removes all the item's lore*/
     public void removeLore() 
-    {
-        lore.clear();
-        lore = null; 
+    { 
+        if(lore != null)
+        {
+            lore.clear();
+            lore = null;
+        }
     }
     
     /**Sets the item namespace key for this buyable item
