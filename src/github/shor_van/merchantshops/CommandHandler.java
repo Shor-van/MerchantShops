@@ -539,10 +539,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     {
                                         if(args.length >= 6)
                                         {
-                                            buyableItem.getLore().clear();
                                             String[] loreLines = args[5].split(":");
+                                           
+                                            buyableItem.removeLore();
                                             for(String loreLine : loreLines)
-                                                buyableItem.getLore().add(loreLine.replace("_", " "));
+                                                buyableItem.addLore(loreLine.replace("_", " "));
                                             ((MerchantShops) plugin).saveMerchants();
                                             
                                             sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") lore has changed");

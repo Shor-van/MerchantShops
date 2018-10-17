@@ -32,11 +32,11 @@ public class BuyableItem
         
         this.bulkLevelCost = 0;
         this.bulkBuyMultiplier = 1;
-        this.displayName = "";
-        this.skullOwner = "";
-        this.skullTexture = "";
-        this.lore = new ArrayList<>();
-        this.enchants = new ArrayList<>();
+        this.displayName = null;
+        this.skullOwner = null;
+        this.skullTexture = null;
+        this.lore = null;
+        this.enchants = null;
     }
     
     /**Gets the index of the enchantment in the item's enchants list 
@@ -93,6 +93,9 @@ public class BuyableItem
             throw new IllegalArgumentException("The index is out of range in the enchants list!");
         
         enchants.remove(index);
+        
+        if(enchants.size() == 0)
+            enchants = null;
     }
     
     /**Adds the specified enchant to the item's enchants list
@@ -104,6 +107,40 @@ public class BuyableItem
             enchants = new ArrayList<>();
         
         enchants.add(enchantKey + " " + level); 
+    }
+    
+    /**Removes all the item's enchants*/
+    public void removeEnchants()
+    {
+        enchants.clear();
+        enchants = null;
+    }
+    
+    /**Adds a list of strings to the item's lore, each entry in the list is a different line of lore
+     * @param lore the list of lore to add*/
+    public void addAllLore(List<String> lore)
+    {
+        if(this.lore == null)
+            this.lore = new ArrayList<>();
+        
+        this.lore.addAll(lore);
+    }
+    
+    /**Adds the specified string to the item's lore
+     * @param loreline the line of lore to add*/
+    public void addLore(String loreLine)
+    {
+        if(this.lore == null)
+            this.lore = new ArrayList<>();
+        
+        this.lore.add(loreLine);
+    }
+    
+    /**Removes all the item's lore*/
+    public void removeLore() 
+    {
+        lore.clear();
+        lore = null; 
     }
     
     /**Sets the item namespace key for this buyable item
@@ -141,6 +178,14 @@ public class BuyableItem
     /**Sets the base64 encoded string of the texture used by the skull, only valid if the itemKey is of type minecraft:player_head
      * @param skullTexture base64 encoded string of the texture used by the skull*/
     public void setSkullTexture(String skullTexture) { this.skullTexture = skullTexture; }
+    
+    /**Sets the item's lore
+     * @param lore a list of strings containing the lore lines*/
+    public void setLore(List<String> lore) { this.lore = lore; } 
+    
+    /**Sets the item's enchantments
+     * @param enchants a list of strings containing the enchants*/
+    public void setEnchants(List<String> enchants) { this.enchants = enchants; } 
     
     /**Gets the namespace key of the item
      * @return the namespace key of the item*/

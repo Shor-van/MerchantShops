@@ -122,20 +122,20 @@ public class Merchant
     		
             //if item is skull
             if(item.getType() == Material.PLAYER_HEAD)
-                if(buyableItem.getSkullOwner().isEmpty() == false)
+                if(buyableItem.getSkullOwner() != null)
                     ((SkullMeta)meta).setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(buyableItem.getSkullOwner())));	
     		
             //if has skull texture
-            if(buyableItem.getSkullTexture().isEmpty() == false)
+            if(buyableItem.getSkullTexture() != null)
                 MerchantShops.applyTexture((SkullMeta)meta, UUID.fromString(buyableItem.getSkullOwner()), buyableItem.getSkullTexture());
     		
             //if has display name
-            if(buyableItem.getDisplayName().isEmpty() == false)
+            if(buyableItem.getDisplayName() != null)
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', buyableItem.getDisplayName()));
     		
             //if has lore
             List<String> lore = new ArrayList<>();
-            if(buyableItem.getLore().size() > 0)			
+            if(buyableItem.getLore() != null)			
                 for(String line : buyableItem.getLore())
                     lore.add(ChatColor.translateAlternateColorCodes('&', line));
     		
@@ -152,7 +152,7 @@ public class Merchant
             item.setItemMeta(meta);
     		
             //if has enchants
-            if(buyableItem.getEnchants().size() > 0)
+            if(buyableItem.getEnchants() != null)
             {
                 for(String enchant : buyableItem.getEnchants())
                 {

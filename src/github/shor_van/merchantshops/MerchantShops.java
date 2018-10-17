@@ -138,10 +138,10 @@ public class MerchantShops extends JavaPlugin
                                 buyableItem.setSkullTexture(itemData.getString("skull-texture"));
     						
                             if(itemData.contains("lore", true))
-                                buyableItem.getLore().addAll((List<String>)itemData.getList("lore"));
+                                buyableItem.setLore((List<String>)itemData.getList("lore"));
     						
                             if(itemData.contains("enchants", true))
-                                buyableItem.getEnchants().addAll((List<String>)itemData.getList("enchants"));
+                                buyableItem.setEnchants((List<String>)itemData.getList("enchants"));
     						
                             merchantItems.add(buyableItem);
                         }
@@ -226,23 +226,23 @@ public class MerchantShops extends JavaPlugin
                     itemSection.set("bulk-multiplier", buyableItem.getBulkBuyMutiplier());
                 
                 //display name if has
-                if(buyableItem.getDisplayName().isEmpty() == false)
+                if(buyableItem.getDisplayName() != null)
                     itemSection.set("display-name", buyableItem.getDisplayName());
     			
                 //skull owner if has
-                if(buyableItem.getSkullOwner().isEmpty() == false)
+                if(buyableItem.getSkullOwner() != null)
                     itemSection.set("skull-owner", buyableItem.getSkullOwner());
     			
                 //skull texture if has
-                if(buyableItem.getSkullTexture().isEmpty() == false)
+                if(buyableItem.getSkullTexture() != null)
                     itemSection.set("skull-texture", buyableItem.getSkullTexture());
     			
                 //lore if has
-                if(buyableItem.getLore().size() > 0)
+                if(buyableItem.getLore() != null)
                     itemSection.set("lore", buyableItem.getLore());
     			
                 //enchants if has
-                if(buyableItem.getEnchants().size() > 0)
+                if(buyableItem.getEnchants() != null)
                     itemSection.set("enchants", buyableItem.getEnchants());
             }
         }
