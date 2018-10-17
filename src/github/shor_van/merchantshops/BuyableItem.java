@@ -44,6 +44,9 @@ public class BuyableItem
      * @return the index of the enchant in the list, -1 if the item does not have the enchant*/
     public int getEnchantIndex(String enchantKey)
     {
+        if(enchants == null)
+            return -1;
+        
         for(int i = 0; i < enchants.size(); i++)
             if(enchants.get(i).split(" ")[0].toLowerCase().equals(enchantKey.toLowerCase()))
                 return i;
@@ -55,6 +58,9 @@ public class BuyableItem
      * @return true if the item has the enchantment else false*/
     public boolean hasEnchant(String enchantKey)
     {
+        if(enchants == null)
+            return false;
+            
         for(String enchant : enchants)
             if(enchant.split(" ")[0].toLowerCase().equals(enchantKey.toLowerCase()))
                 return true;
@@ -66,8 +72,11 @@ public class BuyableItem
      * @param level the level to set*/
     public void setEnchantLevel(int index, int level)
     {
+        if(enchants == null)
+            throw new IllegalStateException("This item does not have any enchants!");
+            
         if(index < 0 || index >= enchants.size())
-            throw new IllegalArgumentException("The index is out of range in enchants list");
+            throw new IllegalArgumentException("The index is out of range in enchants list!");
         
         String enchantKey = enchants.get(index).split(" ")[0];
         enchants.set(index, enchantKey + " " + level);
@@ -77,8 +86,11 @@ public class BuyableItem
      * @param index the index of enchantment to remove*/
     public void removeEnchant(int index)
     {
+        if(enchants == null)
+            throw new IllegalStateException("This item does not have any enchants!");
+        
         if(index < 0 || index >= enchants.size())
-            throw new IllegalArgumentException("The index is out of range in the enchants list");
+            throw new IllegalArgumentException("The index is out of range in the enchants list!");
         
         enchants.remove(index);
     }
@@ -86,7 +98,13 @@ public class BuyableItem
     /**Adds the specified enchant to the item's enchants list
      * @param enchantKey the namespace key of the enchantment
      * @param level the level of the enchantment*/
-    public void addEnchant(String enchantKey, int level) { enchants.add(enchantKey + " " + level); }
+    public void addEnchant(String enchantKey, int level) 
+    {
+        if(enchants == null)
+            enchants = new ArrayList<>();
+        
+        enchants.add(enchantKey + " " + level); 
+    }
     
     /**Sets the item namespace key for this buyable item
      * @param itemKey the namespace key of the item*/
