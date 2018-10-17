@@ -480,6 +480,23 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     {
                                         if(args.length >= 6)
                                         {
+                                            //if sender wants to clear the display name
+                                            if(args[5].equalsIgnoreCase("clear"))
+                                            {
+                                                //does not have a display name
+                                                if(buyableItem.getDisplayName() == null)
+                                                {
+                                                    sender.sendMessage(ChatColor.RED + "Item: " + itemId + " sold by merchant (" + merchantId + ") does not have a display name set!");
+                                                    return true;
+                                                }
+                                                
+                                                buyableItem.setDisplayName(null);
+                                                ((MerchantShops) plugin).saveMerchants();
+                                                
+                                                sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") display name cleared");
+                                                return true;
+                                            }
+                                            
                                             String displayName = args[5].replace("_", " ");
                                             buyableItem.setDisplayName(displayName);
                                             ((MerchantShops) plugin).saveMerchants();
@@ -497,6 +514,23 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     {
                                         if(args.length >= 6)
                                         {
+                                            //if sender wants to clear the skull owner
+                                            if(args[5].equalsIgnoreCase("clear"))
+                                            {
+                                                //does not have skull owner
+                                                if(buyableItem.getSkullOwner() == null)
+                                                {
+                                                    sender.sendMessage(ChatColor.RED + "Item: " + itemId + " sold by merchant (" + merchantId + ") does not have a skull owner set!");
+                                                    return true;
+                                                }
+                                                
+                                                buyableItem.setSkullOwner(null);
+                                                ((MerchantShops) plugin).saveMerchants();
+                                                
+                                                sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") skull owner cleared");
+                                                return true;
+                                            }
+                                            
                                             String skullOwner = args[5];
                                             buyableItem.setSkullOwner(skullOwner);
                                             ((MerchantShops) plugin).saveMerchants();
@@ -518,6 +552,23 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     {
                                         if(args.length >= 6)
                                         {
+                                            //if sender wants to clear the skull texture
+                                            if(args[5].equalsIgnoreCase("clear"))
+                                            {
+                                                //does not have skull texture
+                                                if(buyableItem.getSkullTexture() == null)
+                                                {
+                                                    sender.sendMessage(ChatColor.RED + "Item: " + itemId + " sold by merchant (" + merchantId + ") does not have a skull texture set!");
+                                                    return true;
+                                                }
+                                                
+                                                buyableItem.setSkullTexture(null);
+                                                ((MerchantShops) plugin).saveMerchants();
+                                                
+                                                sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") skull texture cleared");
+                                                return true;
+                                            }
+                                            
                                             String skullTexture = args[5];
                                             buyableItem.setSkullTexture(skullTexture);
                                             ((MerchantShops) plugin).saveMerchants();
@@ -539,6 +590,23 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     {
                                         if(args.length >= 6)
                                         {
+                                            //If sender wants to clear lore
+                                            if(args[5].equalsIgnoreCase("clear"))
+                                            {
+                                                //does not have lore
+                                                if(buyableItem.getLore() == null)
+                                                {
+                                                    sender.sendMessage(ChatColor.RED + "Item: " + itemId + " sold by merchant (" + merchantId + ") does not have any lore!");
+                                                    return true;
+                                                }
+                                                
+                                                buyableItem.removeLore();
+                                                ((MerchantShops) plugin).saveMerchants();
+                                                
+                                                sender.sendMessage(ChatColor.GOLD + "Item: " + ChatColor.DARK_AQUA + itemId + ChatColor.GOLD + " sold by merchant" + ChatColor.GOLD + "(" + ChatColor.AQUA + merchantId + ChatColor.GOLD + ") lore has been cleared");
+                                                return true;
+                                            }
+                                            
                                             String[] loreLines = args[5].split(":");
                                            
                                             buyableItem.removeLore();
