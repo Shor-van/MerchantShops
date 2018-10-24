@@ -102,7 +102,7 @@ public class EventListener implements Listener
                         //Broken item
                         if(clickedItem.getType() == Merchant.errorItemMaterial  && clickedItem.getItemMeta().getLore().get(2).equals(Merchant.errItemToken))
                         {
-                            player.sendMessage(ChatColor.RED + "This item is broken! inform a server addmin.");
+                            player.sendMessage(ChatColor.RED + "This item is broken! inform a server admin.");
                             return;
                         }
                         
