@@ -14,6 +14,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -126,6 +127,7 @@ public class Merchant
                 errLore.add(errItemToken);
                 errMeta.setLore(errLore);
                 
+                errMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 errItem.setItemMeta(errMeta);
                 
                 errItem.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 0);
