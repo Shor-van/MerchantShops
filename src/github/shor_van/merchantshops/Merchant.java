@@ -128,9 +128,9 @@ public class Merchant
                 if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null)
                     errLore.add("itemKey: " + ChatColor.RED + buyableItem.getItemKey() + ChatColor.DARK_PURPLE + " is not a valid item.");
                 if(buyableItem.getAmount() <= 0)
-                    errLore.add("amount: " + ChatColor.RED + buyableItem.getAmount() + ChatColor.DARK_PURPLE + " amount should be greater then zero.");
+                    errLore.add("amount: " + ChatColor.RED + buyableItem.getAmount() + ChatColor.DARK_PURPLE + " should be greater then zero.");
                 if(buyableItem.getLevelCost() <= 0)
-                    errLore.add("level cost: " + ChatColor.RED + buyableItem.getLevelCost() + ChatColor.DARK_PURPLE + " level cost should be greater then zero.");
+                    errLore.add("level cost: " + ChatColor.RED + buyableItem.getLevelCost() + ChatColor.DARK_PURPLE + " should be greater then zero.");
                     
                 errLore.add(errItemToken);
                 errMeta.setLore(errLore);
