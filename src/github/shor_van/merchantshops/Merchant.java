@@ -23,6 +23,8 @@ public class Merchant
 {
     public static final int displaySize = 27; //The max amount of items items to show if we would go over the max size of the inventory
     public static final Material buttonMaterial = Material.SPECTRAL_ARROW; //The material of the item use by the navigation buttons
+    public static final Material errorItemMaterial = Material.BARRIER; //The material used to show a item with invalid data
+    public static final String errItemToken = ChatColor.MAGIC + "" + ChatColor.BLACK + "errItem8246"; //the lore line used by the error item
     public static final String prevPageLoreToken = "Go to the previous page"; //The lore line used by the prev page navigation button
     public static final String nextPageLoreToken = "Go to the next page"; //The lore line used by the next page navigation button
     
@@ -111,6 +113,22 @@ public class Merchant
             if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null)
             {
                 Bukkit.getLogger().warning("[MerchantShops] Item: " + buyableItem.getItemKey() + " IDX:" + i + " solded by merchant: " + getMerchantEntity().getCustomName() + " is not a valid item!");
+                
+                //Create error item
+                ItemStack errItem = new ItemStack(errorItemMaterial);
+                ItemMeta errMeta = errItem.getItemMeta();
+                
+                errMeta.setDisplayName(ChatColor.RED + "ERROR ITEM!");
+                
+                List<String> errLore = new ArrayList<>();
+                errLore.add("This item has invalid data, inform a server admin.");
+                errLore.add("itemKey: " + ChatColor.RED + buyableItem.getItemKey() + ChatColor.DARK_PURPLE + " is not a valid item.");
+                errLore.add(errItemToken);
+                errMeta.setLore(errLore);
+                
+                errItem.setItemMeta(errMeta);
+                
+                buyMenu.addItem(errItem);
                 continue;
             }
     		

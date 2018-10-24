@@ -98,7 +98,14 @@ public class EventListener implements Listener
                             merchant.showBuyMenu(player, (page - 1) * Merchant.displaySize);
                             return;
                         }
-
+                        
+                        //Broken item
+                        if(clickedItem.getType() == Merchant.errorItemMaterial  && clickedItem.getItemMeta().getLore().get(2).equals(Merchant.errItemToken))
+                        {
+                            player.sendMessage(ChatColor.RED + "This item is broken! inform a server addmin.");
+                            return;
+                        }
+                        
                         //Get buyable item
                         BuyableItem buyableItem = merchant.getItemsForSale().get(slotClicked + startIdx);
                         
