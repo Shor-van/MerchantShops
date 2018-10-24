@@ -113,7 +113,7 @@ public class Merchant
             //Check if item has invalid data
             if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null || buyableItem.getAmount() <= 0 || buyableItem.getLevelCost() <= 0 || buyableItem.hasInvalidEnchants() == true)
             {
-                Bukkit.getLogger().warning("[MerchantShops] Item: " + buyableItem.getItemKey() + " IDX:" + i + " solded by merchant: " + getMerchantEntity().getCustomName() + " is not a valid item!");
+                Bukkit.getLogger().warning("[MerchantShops] Item: " + buyableItem.getItemKey() + " IDX:" + i + " solded by merchant: " + name + " has invalid data!");
                 
                 //Create error item
                 ItemStack errItem = new ItemStack(errorItemMaterial);
