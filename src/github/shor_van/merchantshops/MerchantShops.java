@@ -196,7 +196,7 @@ public class MerchantShops extends JavaPlugin
             merchantSection.set("name", merchant.getMerchantEntity().getCustomName());
     		
             //position
-            Location loc = merchant.getMerchantEntity().getLocation();
+            Location loc = merchant.getLocation();
             merchantSection.set("position.world", loc.getWorld().getName());
             merchantSection.set("position.x", loc.getX());
             merchantSection.set("position.y", loc.getY());
