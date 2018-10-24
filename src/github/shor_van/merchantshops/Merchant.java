@@ -110,8 +110,8 @@ public class Merchant
             //Get buyable item data
             BuyableItem buyableItem = sellItems.get(i);
     		
-            //Item exists?
-            if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null)
+            //Check if item has invalid data
+            if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null || buyableItem.getAmount() <= 0 || buyableItem.getLevelCost() <= 0)
             {
                 Bukkit.getLogger().warning("[MerchantShops] Item: " + buyableItem.getItemKey() + " IDX:" + i + " solded by merchant: " + getMerchantEntity().getCustomName() + " is not a valid item!");
                 
@@ -123,7 +123,15 @@ public class Merchant
                 
                 List<String> errLore = new ArrayList<>();
                 errLore.add("This item has invalid data, inform a server admin.");
-                errLore.add("itemKey: " + ChatColor.RED + buyableItem.getItemKey() + ChatColor.DARK_PURPLE + " is not a valid item.");
+                
+                //Display all invalid data
+                if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null)
+                    errLore.add("itemKey: " + ChatColor.RED + buyableItem.getItemKey() + ChatColor.DARK_PURPLE + " is not a valid item.");
+                else if(buyableItem.getAmount() <= 0)
+                    errLore.add("amount: " + ChatColor.RED + buyableItem.getAmount() + ChatColor.DARK_PURPLE + " amount should be greater the zero.");
+                else if(buyableItem.getLevelCost() <= 0)
+                    errLore.add("level cost: " + ChatColor.RED + buyableItem.getLevelCost() + ChatColor.DARK_PURPLE + " level cost should be greater the zero.");
+                    
                 errLore.add(errItemToken);
                 errMeta.setLore(errLore);
                 
