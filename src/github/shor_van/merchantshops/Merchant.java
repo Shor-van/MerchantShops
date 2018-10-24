@@ -128,7 +128,9 @@ public class Merchant
                 
                 errItem.setItemMeta(errMeta);
                 
-                buyMenu.addItem(errItem);
+                errItem.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 0);
+                
+                buyMenu.setItem(buyMenu.firstEmpty(), errItem);
                 continue;
             }
     		
@@ -188,7 +190,7 @@ public class Merchant
                     }
                 }
             }
-            buyMenu.addItem(item);
+            buyMenu.setItem(buyMenu.firstEmpty(), item);
         }
     	
         //Show inventory
