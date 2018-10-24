@@ -3,6 +3,9 @@ package github.shor_van.merchantshops;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
+
 /**Represents a item that is sold by a merchant*/
 public class BuyableItem
 {
@@ -76,7 +79,7 @@ public class BuyableItem
             throw new IllegalStateException("This item does not have any enchants!");
             
         if(index < 0 || index >= enchants.size())
-            throw new IllegalArgumentException("The index is out of range in enchants list!");
+            throw new IllegalArgumentException("The index is out of range of the enchants list!");
         
         String enchantKey = enchants.get(index).split(" ")[0];
         enchants.set(index, enchantKey + " " + level);
@@ -117,6 +120,24 @@ public class BuyableItem
             enchants.clear();
             enchants = null;
         }
+    }
+    
+    /**Checks if the enchantment data that the item has is invalid
+     * @return true if the item has invalid enchantment data, false if all data is valid*/
+    public boolean hasInvalidEnchants()
+    {
+        if(enchants == null)
+            return false;
+        
+        for(String enchant : enchants)
+        {
+            String[] enchantData = enchant.split(" ");
+            if(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0].toLowerCase())) == null)
+                return true;
+            else if(MerchantShops.isInteger(enchantData[1]) == false)
+                return true;
+        }
+        return false;
     }
     
     /**Adds a list of strings to the item's lore, each entry in the list is a different line of lore
