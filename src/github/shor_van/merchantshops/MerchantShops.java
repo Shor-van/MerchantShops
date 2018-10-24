@@ -361,4 +361,12 @@ public class MerchantShops extends JavaPlugin
         
         return false;
     }
+    
+    /**Checks if the specified string is a valid integer.
+     * @param string the string to check if it is a number
+     * @return true if the string is a valid number, false if it is not a valid number.*/
+    public static boolean isInteger(String string) 
+    {
+        return string.matches("[+-]?\\d+");
+    }
 }

@@ -111,7 +111,7 @@ public class Merchant
             BuyableItem buyableItem = sellItems.get(i);
     		
             //Check if item has invalid data
-            if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null || buyableItem.getAmount() <= 0 || buyableItem.getLevelCost() <= 0)
+            if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null || buyableItem.getAmount() <= 0 || buyableItem.getLevelCost() <= 0 || buyableItem.hasInvalidEnchants() == true)
             {
                 Bukkit.getLogger().warning("[MerchantShops] Item: " + buyableItem.getItemKey() + " IDX:" + i + " solded by merchant: " + getMerchantEntity().getCustomName() + " is not a valid item!");
                 
@@ -131,7 +131,21 @@ public class Merchant
                     errLore.add("amount: " + ChatColor.RED + buyableItem.getAmount() + ChatColor.DARK_PURPLE + " should be greater then zero.");
                 if(buyableItem.getLevelCost() <= 0)
                     errLore.add("level cost: " + ChatColor.RED + buyableItem.getLevelCost() + ChatColor.DARK_PURPLE + " should be greater then zero.");
-                    
+                
+                //Enchant data if has any
+                if(buyableItem.getEnchants() != null)
+                {
+                    for(String enchant : buyableItem.getEnchants())
+                    {
+                        String[] enchantData = enchant.split(" ");
+                        if(Enchantment.getByKey(NamespacedKey.minecraft(enchantData[0].toLowerCase())) == null)
+                            errLore.add("enchant: " + ChatColor.RED + enchantData[0] + ChatColor.DARK_PURPLE + " is not a valid enchantment.");
+                        if(MerchantShops.isInteger(enchantData[1]) == false)
+                            errLore.add("level: " + ChatColor.RED + enchantData[1] + ChatColor.DARK_PURPLE + " for enchant: " + ChatColor.RED + enchantData[0] + ChatColor.DARK_PURPLE + " is NaN.");
+                    }
+                }
+                
+                //Add error lore token
                 errLore.add(errItemToken);
                 errMeta.setLore(errLore);
                 
@@ -303,7 +317,7 @@ public class Merchant
         //Check for players viewing merchant inventory if so close the inventory, I would have liked to update the name but it looks like its not doable
         for(Player player : Bukkit.getOnlinePlayers())
             if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName().equals(name))
-                player.getOpenInventory().close();;
+                player.getOpenInventory().close();
         
         if(wasUnloaded == true)
             chunk.unload(true);
