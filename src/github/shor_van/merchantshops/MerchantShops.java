@@ -88,7 +88,7 @@ public class MerchantShops extends JavaPlugin
                     if(merchantData.contains("entity-type", true))
                     {
                         String eType = merchantData.getString("entity-type").toUpperCase();
-                        if(EntityType.valueOf(eType) != null)
+                        if(isValidEntityType(eType) == true)
                             entityType = EntityType.valueOf(eType);
                         else
                             this.getLogger().warning(merchantEntry + " has invalid entity type:" + eType + " using default.");
@@ -378,5 +378,16 @@ public class MerchantShops extends JavaPlugin
     public static boolean isInteger(String string) 
     {
         return string.matches("[+-]?\\d+");
+    }
+    
+    /**Checks if the specified string is a valid entity type.
+     * @param value the entity type string
+     * @return true if the string is a valid entity, false if it is not a valid entity.*/
+    public static boolean isValidEntityType(String value)
+    {
+        for(EntityType entityType : EntityType.values())
+            if(entityType.name().equals(value))
+                return true;
+        return false;
     }
 }

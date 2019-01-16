@@ -65,11 +65,10 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     
                                     //entity type
                                     if(args.length >= 5)
-                                        entityType = EntityType.valueOf(args[4].toUpperCase());
-                                    
-                                    //validate entity type
-                                    if(entityType == null)
-                                        { sender.sendMessage(ChatColor.RED + args[4] + " is a invalid entity type!"); return true;}
+                                        if(MerchantShops.isValidEntityType(args[4]) == true)
+                                            entityType = EntityType.valueOf(args[4].toUpperCase());
+                                        else
+                                            { sender.sendMessage(ChatColor.RED + args[4] + " is a invalid entity type!"); return true; }
                                         
                                     //pitch
                                     float pitch = 0f;
