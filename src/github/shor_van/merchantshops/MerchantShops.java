@@ -156,7 +156,7 @@ public class MerchantShops extends JavaPlugin
                     World world = Bukkit.getWorld(worldName);
                     Location location = new Location(world, posX, posY, posZ, (float)yaw, (float)pitch);
     				
-                    Entity merchantEntity = world.spawnEntity(location,  merchantEntityType);
+                    Entity merchantEntity = world.spawnEntity(location, merchantEntityType);
     				
                     merchantEntity.setCustomName(ChatColor.translateAlternateColorCodes('&', displayName));
                     merchantEntity.setCustomNameVisible(true);
@@ -249,8 +249,7 @@ public class MerchantShops extends JavaPlugin
         this.saveConfig();
     }
     
-    /**Gets the list of active merchants
-     * @return the list of merchants*/
+    /**Spawns the merchant's entity at the specified location*/
     public void createNewMerchant(Location location, String displayName)
     {
         Entity merchantEntity = location.getWorld().spawnEntity(location, merchantEntityType);
@@ -266,8 +265,8 @@ public class MerchantShops extends JavaPlugin
         saveMerchants();
     }
     
-    /**Gets the list of active merchants
-     * @return the list of merchants*/
+    /**Gets the specified merchant
+     * @param index the index of the merchant to get*/
     public Merchant getMerchant(int index)
     {
         if(index >= 0 && index < merchants.size())
