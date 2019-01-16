@@ -203,7 +203,7 @@ public class MerchantShops extends JavaPlugin
     		
             //entity type
             if(merchant.getEntityType() != EntityType.VILLAGER);
-                merchantSection.set("entity-type", merchant.getEntityType());
+                merchantSection.set("entity-type", merchant.getEntityType().name().toLowerCase());
             
             //Name
             merchantSection.set("name", merchant.getMerchantEntity().getCustomName());
