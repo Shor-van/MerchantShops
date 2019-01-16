@@ -261,8 +261,6 @@ public class MerchantShops extends JavaPlugin
     	
         List<BuyableItem> buyableItems = new ArrayList<>();
         merchants.add(new Merchant(merchantEntity.getUniqueId(), ChatColor.translateAlternateColorCodes('&', displayName), location, buyableItems));
-    	
-        saveMerchants();
     }
     
     /**Gets the specified merchant

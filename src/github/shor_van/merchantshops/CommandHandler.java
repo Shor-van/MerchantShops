@@ -84,6 +84,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                 
                                 //create
                                 ((MerchantShops) plugin).createNewMerchant(location, displayName);;
+                                ((MerchantShops) plugin).saveMerchants();
                                 
                                 playerSender.sendMessage(ChatColor.GOLD + "New merchant created at X: " + ChatColor.AQUA + location.getX() + ChatColor.GOLD  + " Y: " + ChatColor.AQUA + location.getY() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + location.getZ());
                                 return true;
