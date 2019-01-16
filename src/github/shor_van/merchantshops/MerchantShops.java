@@ -386,7 +386,7 @@ public class MerchantShops extends JavaPlugin
     public static boolean isValidEntityType(String value)
     {
         for(EntityType entityType : EntityType.values())
-            if(entityType.name().equals(value))
+            if(entityType.name().equals(value.toUpperCase()))
                 return true;
         return false;
     }
