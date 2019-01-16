@@ -1,5 +1,6 @@
 shops-data:
     merchant-0:
+        entity-type: villager
         name: "&6Testman's Tests!"
         position:
             world: SMP World

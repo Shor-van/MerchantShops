@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,6 +52,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             {
                                 Player playerSender = (Player)sender;
                                 Location location = null;
+                                EntityType entityType = EntityType.VILLAGER;
                                 String displayName = ChatColor.RED + "NOT NAMED!";
                                 
                                 //Validate/parse
@@ -61,37 +63,45 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     double posY = Double.parseDouble(args[2]);
                                     double posZ = Double.parseDouble(args[3]);
                                     
+                                    //entity type
+                                    if(args.length >= 5)
+                                        entityType = EntityType.valueOf(args[4].toUpperCase());
+                                    
+                                    //validate entity type
+                                    if(entityType == null)
+                                        { sender.sendMessage(ChatColor.RED + args[4] + " is a invalid entity type!"); return true;}
+                                        
                                     //pitch
                                     float pitch = 0f;
-                                    if(args.length >= 5)
-                                        pitch = Float.parseFloat(args[4]);
+                                    if(args.length >= 6)
+                                        pitch = Float.parseFloat(args[5]);
                                     
                                     //yaw
                                     float yaw = 0f;
-                                    if(args.length >= 6)
-                                        yaw = Float.parseFloat(args[5]);
+                                    if(args.length >= 7)
+                                        yaw = Float.parseFloat(args[6]);
                                     
                                     location = new Location(playerSender.getWorld(), posX, posY, posZ, yaw, pitch);
 
                                 } catch (NumberFormatException e) {
-                                    playerSender.sendMessage(ChatColor.RED + "Invalid position data given!");
+                                    sender.sendMessage(ChatColor.RED + "Invalid position data given!");
                                     return true;
                                 }
     							
                                 //Name
-                                if(args.length >= 7)
-                                    displayName = args[6].replace("_", " ");
+                                if(args.length >= 8)
+                                    displayName = args[7].replace("_", " ");
                                 
                                 //create
-                                ((MerchantShops) plugin).createNewMerchant(location, displayName);;
+                                ((MerchantShops) plugin).createNewMerchant(entityType, location, displayName);
                                 ((MerchantShops) plugin).saveMerchants();
                                 
-                                playerSender.sendMessage(ChatColor.GOLD + "New merchant created at X: " + ChatColor.AQUA + location.getX() + ChatColor.GOLD  + " Y: " + ChatColor.AQUA + location.getY() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + location.getZ());
+                                sender.sendMessage(ChatColor.GOLD + "New merchant created at X: " + ChatColor.AQUA + location.getX() + ChatColor.GOLD  + " Y: " + ChatColor.AQUA + location.getY() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + location.getZ());
                                 return true;
                             }
                             else
                             {
-                                sender.sendMessage(ChatColor.AQUA + "Usage: /shop addmerchant <x> <y> <z> [pitch] [yaw] [name]");
+                                sender.sendMessage(ChatColor.AQUA + "Usage: /shop addmerchant <x> <y> <z> [EntityType] [pitch] [yaw] [name]");
                                 return true;
                             }
                         }
@@ -927,12 +937,26 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             options.add(playerSender.getLocation().getZ() + "");
                     }
     				
-                    //pitch
+                    //entity type
                     if(args.length == 5)
                     {
                         if(args[4].isEmpty() == false)
                         {
-                            if((playerSender.getLocation().getPitch() + "").startsWith(args[4]))
+                            for(EntityType entityType : EntityType.values())
+                                if(entityType.name().toLowerCase().startsWith(args[4].toLowerCase()))
+                                    options.add(entityType.name().toLowerCase());
+                        }
+                        else
+                            for(EntityType entityType : EntityType.values())
+                                options.add(entityType.name().toLowerCase());
+                    }
+                    
+                    //pitch
+                    if(args.length == 6)
+                    {
+                        if(args[5].isEmpty() == false)
+                        {
+                            if((playerSender.getLocation().getPitch() + "").startsWith(args[5]))
                                 options.add(playerSender.getLocation().getPitch() + "");
                         }
                         else
@@ -940,11 +964,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                     }
     				
                     //yaw
-                    if(args.length == 6)
+                    if(args.length == 7)
                     {
-                        if(args[5].isEmpty() == false)
+                        if(args[6].isEmpty() == false)
                         {
-                            if((playerSender.getLocation().getYaw() + "").startsWith(args[5]))
+                            if((playerSender.getLocation().getYaw() + "").startsWith(args[6]))
                                 options.add(playerSender.getLocation().getYaw() + "");
                         }
                         else

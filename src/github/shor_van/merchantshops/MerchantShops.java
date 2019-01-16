@@ -25,8 +25,6 @@ import com.mojang.authlib.properties.Property;
 /**The main class for the plugin*/
 public class MerchantShops extends JavaPlugin
 {
-    public static final EntityType merchantEntityType = EntityType.VILLAGER; //The entity type used by the merchants
-    
     private CommandHandler cmdHandler; //command handler for the plugin
     private EventListener eventListener; //the event listener of the plugin
     
@@ -85,6 +83,17 @@ public class MerchantShops extends JavaPlugin
                 ConfigurationSection merchantData = this.getConfig().getConfigurationSection(merchants.getCurrentPath() + "." + merchantEntry);
                 if(merchantData.contains("position", true) && merchantData.contains("sells", true))//Validation
                 {
+                    //entity type
+                    EntityType entityType = EntityType.VILLAGER;
+                    if(merchantData.contains("entity-type", true))
+                    {
+                        String eType = merchantData.getString("entity-type").toUpperCase();
+                        if(EntityType.valueOf(eType) != null)
+                            entityType = EntityType.valueOf(eType);
+                        else
+                            this.getLogger().warning(merchantEntry + " has invalid entity type:" + eType + " using default.");
+                    }
+                    
                     //name
                     String displayName = merchantData.getString("name", ChatColor.RED + "NOT NAMED!"); 
     				
@@ -156,20 +165,20 @@ public class MerchantShops extends JavaPlugin
                     World world = Bukkit.getWorld(worldName);
                     Location location = new Location(world, posX, posY, posZ, (float)yaw, (float)pitch);
     				
-                    Entity merchantEntity = world.spawnEntity(location, merchantEntityType);
+                    Entity merchantEntity = world.spawnEntity(location, entityType);
     				
                     merchantEntity.setCustomName(ChatColor.translateAlternateColorCodes('&', displayName));
                     merchantEntity.setCustomNameVisible(true);
                     merchantEntity.setInvulnerable(true);
                     ((LivingEntity) merchantEntity).setAI(false);
     				
+                    this.merchants.add(new Merchant(merchantEntity.getUniqueId(), entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, merchantItems));
+                    loaded++;
+                    
                     //Check if we have a duplicate entities
                     for(Entity entity : merchantEntity.getNearbyEntities(1, 1, 1))
-                        if(entity.getType() == merchantEntityType && entity.getCustomName().equals(merchantEntity.getCustomName()))
+                        if(entity.getType() == entityType && entity.getCustomName().equals(merchantEntity.getCustomName()))
                             { entity.remove(); this.getLogger().info("Found duplicate entity for " + merchantEntry + " removing it."); }
-    				
-                    this.merchants.add(new Merchant(merchantEntity.getUniqueId(), ChatColor.translateAlternateColorCodes('&', displayName), location, merchantItems));
-                    loaded++;
                 }
                 else
                 {
@@ -192,6 +201,10 @@ public class MerchantShops extends JavaPlugin
             Merchant merchant = this.merchants.get(i);
             ConfigurationSection merchantSection = merchants.createSection("merchant-" + i);
     		
+            //entity type
+            if(merchant.getEntityType() != EntityType.VILLAGER);
+                merchantSection.set("entity-type", merchant.getEntityType());
+            
             //Name
             merchantSection.set("name", merchant.getMerchantEntity().getCustomName());
     		
@@ -250,9 +263,9 @@ public class MerchantShops extends JavaPlugin
     }
     
     /**Spawns the merchant's entity at the specified location*/
-    public void createNewMerchant(Location location, String displayName)
+    public void createNewMerchant(EntityType entityType, Location location, String displayName)
     {
-        Entity merchantEntity = location.getWorld().spawnEntity(location, merchantEntityType);
+        Entity merchantEntity = location.getWorld().spawnEntity(location, entityType);
     	
         merchantEntity.setCustomName(ChatColor.translateAlternateColorCodes('&', displayName));
         merchantEntity.setCustomNameVisible(true);
@@ -260,7 +273,7 @@ public class MerchantShops extends JavaPlugin
         ((LivingEntity) merchantEntity).setAI(false);
     	
         List<BuyableItem> buyableItems = new ArrayList<>();
-        merchants.add(new Merchant(merchantEntity.getUniqueId(), ChatColor.translateAlternateColorCodes('&', displayName), location, buyableItems));
+        merchants.add(new Merchant(merchantEntity.getUniqueId(), entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, buyableItems));
     }
     
     /**Gets the specified merchant

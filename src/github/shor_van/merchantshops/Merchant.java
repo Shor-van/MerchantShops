@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -30,17 +31,21 @@ public class Merchant
     public static final String nextPageLoreToken = "Go to the next page"; //The lore line used by the next page navigation button
     
     private String name; //The name of the merchant
+    private EntityType entityType; //The entity type of the merchant
     private UUID entityUUID; //The UUID of the merchant entity
     private Location location; //The location of the merchant entity
     private List<BuyableItem> sellItems; //The items that the merchant sells
     
     /**Creates a new merchant instance
      * @param entityUUID the UUID of the entity that physical represents the merchant in the world
+     * @param entityType the type of entity the merchant is represented by
+     * @param displayName the display name of the merchant
      * @param location the location of the entity
      * @param sellItems the list of items that the merchant sells*/
-    public Merchant(UUID entityUUID, String displayName, Location location, List<BuyableItem> sellItems)
+    public Merchant(UUID entityUUID, EntityType entityType, String displayName, Location location, List<BuyableItem> sellItems)
     {
         this.entityUUID = entityUUID;
+        this.entityType = entityType;
         this.name = displayName;
         this.sellItems = sellItems;
         this.location = location;
@@ -325,6 +330,14 @@ public class Merchant
         return true;
     }
     
+    public void setEntityType(EntityType entityType)
+    {
+        //Change entity in world
+        
+        //set entity type
+        this.entityType = entityType;
+    }
+    
     /**Gets the merchant entity's UUID
      * @return the physical entity's UUID*/
     public UUID getMerchantEntityUUID() { return entityUUID; }
@@ -332,6 +345,10 @@ public class Merchant
     /**Gets the name of the merchant entity
      * @return the name of the merchant entity*/
     public String getMerchantName() { return name; }
+    
+    /**Gets the type of entity that is used by merchant
+     * @return the entity type of the merchant*/
+    public EntityType getEntityType() { return entityType; }
     
     /**Gets location of the merchant entity
      * @return the location of the merchant entity in the world*/
