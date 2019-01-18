@@ -196,7 +196,7 @@ public class MerchantShops extends JavaPlugin
             ConfigurationSection merchantSection = merchants.createSection("merchant-" + i);
     		
             //entity type
-            if(merchant.getEntityType() != EntityType.VILLAGER);
+            if(merchant.getEntityType().equals(EntityType.VILLAGER) == false)
                 merchantSection.set("entity-type", merchant.getEntityType().name().toLowerCase());
             
             //Name
