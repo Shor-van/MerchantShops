@@ -3,6 +3,7 @@ package github.shor_van.merchantshops;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -92,7 +93,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     displayName = args[7].replace("_", " ");
                                 
                                 //create
-                                ((MerchantShops) plugin).createNewMerchant(entityType, location, displayName);
+                                UUID entityUUID = ((MerchantShops) plugin).spawnMerchantEntity(entityType, location, displayName);
+                                ((MerchantShops) plugin).getMerchants().add(new Merchant(entityUUID, entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, new ArrayList<BuyableItem>()));
                                 ((MerchantShops) plugin).saveMerchants();
                                 
                                 sender.sendMessage(ChatColor.GOLD + "New merchant created at X: " + ChatColor.AQUA + location.getX() + ChatColor.GOLD  + " Y: " + ChatColor.AQUA + location.getY() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + location.getZ());

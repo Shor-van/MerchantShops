@@ -165,19 +165,13 @@ public class MerchantShops extends JavaPlugin
                     World world = Bukkit.getWorld(worldName);
                     Location location = new Location(world, posX, posY, posZ, (float)yaw, (float)pitch);
     				
-                    Entity merchantEntity = world.spawnEntity(location, entityType);
-    				
-                    merchantEntity.setCustomName(ChatColor.translateAlternateColorCodes('&', displayName));
-                    merchantEntity.setCustomNameVisible(true);
-                    merchantEntity.setInvulnerable(true);
-                    ((LivingEntity) merchantEntity).setAI(false);
-    				
-                    this.merchants.add(new Merchant(merchantEntity.getUniqueId(), entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, merchantItems));
+                    UUID entityUUID = spawnMerchantEntity(entityType, location, displayName);
+                    this.merchants.add(new Merchant(entityUUID, entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, merchantItems));
                     loaded++;
                     
                     //Check if we have a duplicate entities
-                    for(Entity entity : merchantEntity.getNearbyEntities(1, 1, 1))
-                        if(entity.getType() == entityType && entity.getCustomName().equals(merchantEntity.getCustomName()))
+                    for(Entity entity : Bukkit.getEntity(entityUUID).getNearbyEntities(1, 1, 1))
+                        if(entity.getType() == entityType && entity.getCustomName().equals(Bukkit.getEntity(entityUUID).getCustomName()))
                             { entity.remove(); this.getLogger().info("Found duplicate entity for " + merchantEntry + " removing it."); }
                 }
                 else
@@ -262,18 +256,21 @@ public class MerchantShops extends JavaPlugin
         this.saveConfig();
     }
     
-    /**Spawns the merchant's entity at the specified location*/
-    public void createNewMerchant(EntityType entityType, Location location, String displayName)
+    /**Spawns the merchant's entity at the specified location
+     * @param entityType the type of entity
+     * @param location the location where to spawn the entity
+     * @param displayName the display name of the merchant
+     * @return the UUID of the entity*/
+    public UUID spawnMerchantEntity(EntityType entityType, Location location, String displayName)
     {
         Entity merchantEntity = location.getWorld().spawnEntity(location, entityType);
-    	
+        
         merchantEntity.setCustomName(ChatColor.translateAlternateColorCodes('&', displayName));
         merchantEntity.setCustomNameVisible(true);
         merchantEntity.setInvulnerable(true);
         ((LivingEntity) merchantEntity).setAI(false);
-    	
-        List<BuyableItem> buyableItems = new ArrayList<>();
-        merchants.add(new Merchant(merchantEntity.getUniqueId(), entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, buyableItems));
+        
+        return merchantEntity.getUniqueId();
     }
     
     /**Gets the specified merchant
