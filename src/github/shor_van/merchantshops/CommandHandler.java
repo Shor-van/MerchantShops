@@ -943,12 +943,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                     {
                         if(args[4].isEmpty() == false)
                         {
-                            for(EntityType entityType : EntityType.values())
+                            for(EntityType entityType : MerchantShops.validEntityTypes)
                                 if(entityType.name().toLowerCase().startsWith(args[4].toLowerCase()))
                                     options.add(entityType.name().toLowerCase());
                         }
                         else
-                            for(EntityType entityType : EntityType.values())
+                            for(EntityType entityType : MerchantShops.validEntityTypes)
                                 options.add(entityType.name().toLowerCase());
                     }
                     

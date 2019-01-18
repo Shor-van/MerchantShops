@@ -25,6 +25,16 @@ import com.mojang.authlib.properties.Property;
 /**The main class for the plugin*/
 public class MerchantShops extends JavaPlugin
 {
+  //Array of entity types that can be used
+    public static final EntityType[] validEntityTypes = { EntityType.BAT, EntityType.BLAZE, EntityType.CAVE_SPIDER, EntityType.CHICKEN, EntityType.COD, EntityType.COW, EntityType.CREEPER, 
+            EntityType.DOLPHIN, EntityType.DONKEY, EntityType.DROWNED, EntityType.ELDER_GUARDIAN, EntityType.ENDER_DRAGON, EntityType.ENDERMAN, EntityType.ENDERMITE, 
+            EntityType.EVOKER, EntityType.GHAST, EntityType.GIANT, EntityType.GUARDIAN, EntityType.HORSE, EntityType.HUSK, EntityType.ILLUSIONER, EntityType.IRON_GOLEM, 
+            EntityType.LLAMA, EntityType.MAGMA_CUBE, EntityType.MULE, EntityType.MUSHROOM_COW, EntityType.OCELOT, EntityType.PARROT, EntityType.PHANTOM, EntityType.PIG, 
+            EntityType.PIG_ZOMBIE, EntityType.POLAR_BEAR, EntityType.PUFFERFISH, EntityType.RABBIT, EntityType.SALMON, EntityType.SHEEP, EntityType.SHULKER, EntityType.SILVERFISH, 
+            EntityType.SKELETON, EntityType.SKELETON_HORSE, EntityType.SLIME, EntityType.SNOWMAN, EntityType.SPIDER, EntityType.SQUID, EntityType.STRAY, EntityType.TROPICAL_FISH, 
+            EntityType.TURTLE, EntityType.VEX, EntityType.VILLAGER, EntityType.VINDICATOR, EntityType.WITCH, EntityType.WITHER, EntityType.WITHER_SKELETON, EntityType.WOLF, 
+            EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER};
+    
     private CommandHandler cmdHandler; //command handler for the plugin
     private EventListener eventListener; //the event listener of the plugin
     
@@ -382,7 +392,7 @@ public class MerchantShops extends JavaPlugin
      * @return true if the string is a valid entity, false if it is not a valid entity.*/
     public static boolean isValidEntityType(String value)
     {
-        for(EntityType entityType : EntityType.values())
+        for(EntityType entityType : validEntityTypes)
             if(entityType.name().equals(value.toUpperCase()))
                 return true;
         return false;
