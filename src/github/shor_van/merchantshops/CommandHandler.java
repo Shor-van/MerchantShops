@@ -201,6 +201,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     return true;
                                 }
                             }
+                            else if(args[2].equalsIgnoreCase("entitytype")) //Change the merchant's entity type
+                            {
+                                sender.sendMessage("NOT IMPLEMENTED");
+                                return true;
+                            }
                             else if(args[2].equalsIgnoreCase("position")) //Change the position of the merchants
                             {
                                 if(sender instanceof Player)
@@ -785,7 +790,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                             else
                             {
-                                sender.sendMessage(ChatColor.RED + "Invalid option, possible options: name, position, additem, removeitem, edititem, listitems");
+                                sender.sendMessage(ChatColor.RED + "Invalid option, possible options: name, entitytype, position, additem, removeitem, edititem, listitems");
                                 return true;
                             }
                         }
@@ -986,6 +991,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                     {
                         if("name".startsWith(args[2].toLowerCase()))
                             options.add("name");
+                        if("entitytype".startsWith(args[2].toLowerCase()))
+                            options.add("entitytype");
                         if("position".startsWith(args[2].toLowerCase()))
                             options.add("position");
                         if("additem".startsWith(args[2].toLowerCase()))
@@ -1000,6 +1007,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                     else
                     {
                         options.add("name");
+                        options.add("entitytype");
                         options.add("position");
                         options.add("additem");
                         options.add("removeitem");
@@ -1011,7 +1019,19 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                 //subs
                 if(args.length >= 4)
                 {
-                    if(args[2].equalsIgnoreCase("position"))
+                    if(args[2].equalsIgnoreCase("entitytype"))
+                    {
+                        if(args[3].isEmpty() == false)
+                        {
+                            for(EntityType entityType : MerchantShops.validEntityTypes)
+                                if(entityType.name().toLowerCase().startsWith(args[3].toLowerCase()))
+                                    options.add(entityType.name().toLowerCase());
+                        }
+                        else
+                            for(EntityType entityType : MerchantShops.validEntityTypes)
+                                options.add(entityType.name().toLowerCase());
+                    }
+                    else if(args[2].equalsIgnoreCase("position"))
                     {
                         if(sender instanceof Player)
                         {

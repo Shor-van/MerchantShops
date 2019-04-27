@@ -249,7 +249,7 @@ public class Merchant
     	
         //Check for players viewing merchant inventory if so close it
         for(Player player : Bukkit.getOnlinePlayers())
-            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName().endsWith(name))
+            if(player.getOpenInventory() != null && player.getOpenInventory().getTitle().endsWith(name))
                 player.getOpenInventory().close();
                 
         sellItems.clear();
@@ -321,7 +321,7 @@ public class Merchant
         
         //Check for players viewing merchant inventory if so close the inventory, I would have liked to update the name but it looks like its not doable
         for(Player player : Bukkit.getOnlinePlayers())
-            if(player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().getName().equals(name))
+            if(player.getOpenInventory() != null && player.getOpenInventory().getTitle().equals(name))
                 player.getOpenInventory().close();
         
         if(wasUnloaded == true)
@@ -330,12 +330,44 @@ public class Merchant
         return true;
     }
     
-    public void setEntityType(EntityType entityType)
+    /**Sets the merchant entity type of the merchant
+     * @param entityType the new entity type to use for the merchant
+     * @return true if the name of the merchant entity was modified else if it failed returns false*/
+    public boolean setEntityType(EntityType entityType)
     {
-        //Change entity in world
+        //Get current entity in the world
+        Chunk chunk = null;
+        boolean wasUnloaded = false;
+        Entity oldEntity = getMerchantEntity();
+        if(oldEntity == null)
+        {
+            chunk = this.location.getChunk();
+            if(chunk.isLoaded() == false)
+            {
+                wasUnloaded = true;
+                chunk.load(false);
+                
+                oldEntity = getMerchantEntity();
+            }
+        }
+        
+        //if could not find entity
+        if(oldEntity == null) { 
+            Bukkit.getLogger().warning("[Merchant Shops] Merchant entity could not be found while tring to change its entity type, is it dead?"); return false;
+        }
+        
+        //Remove entity
+        oldEntity.remove();
+        
+        //Spawn new entity
         
         //set entity type
         this.entityType = entityType;
+        
+        if(wasUnloaded == true)
+            chunk.unload(true);
+       
+        return true;
     }
     
     /**Gets the merchant entity's UUID
