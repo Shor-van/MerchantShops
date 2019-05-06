@@ -33,7 +33,7 @@ public class MerchantShops extends JavaPlugin
             EntityType.PIG, EntityType.PIG_ZOMBIE, EntityType.POLAR_BEAR, EntityType.PUFFERFISH, EntityType.RABBIT, EntityType.SALMON, EntityType.SHEEP, EntityType.SHULKER, 
             EntityType.SILVERFISH, EntityType.SKELETON, EntityType.SKELETON_HORSE, EntityType.SLIME, EntityType.SNOWMAN, EntityType.SPIDER, EntityType.SQUID, EntityType.STRAY, 
             EntityType.TROPICAL_FISH, EntityType.TURTLE, EntityType.VEX, EntityType.VILLAGER, EntityType.VINDICATOR, EntityType.WITCH, EntityType.WITHER, EntityType.WITHER_SKELETON, 
-            EntityType.WOLF, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER};
+            EntityType.WOLF, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER, EntityType.FOX, EntityType.WANDERING_TRADER, EntityType.PANDA, EntityType.CAT};
     
     private CommandHandler cmdHandler; //command handler for the plugin
     private EventListener eventListener; //the event listener of the plugin
