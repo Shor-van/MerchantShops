@@ -784,7 +784,9 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                 {
                                     BuyableItem buyableItem = merchant.getItemsForSale().get(i);
                                     sender.sendMessage(ChatColor.AQUA + "ID: " + ChatColor.GOLD + i 
-                                            + ChatColor.AQUA + " Item key: " + ChatColor.GOLD + buyableItem.getItemKey());
+                                            + ChatColor.AQUA + " Item key: " + ChatColor.GOLD + buyableItem.getItemKey()
+                                            + ChatColor.AQUA + " Amount: " + ChatColor.GOLD + buyableItem.getAmount()
+                                            + ChatColor.AQUA + " Cost: " + ChatColor.GOLD + buyableItem.getLevelCost());
                                 }
                                 return true;
                             }
