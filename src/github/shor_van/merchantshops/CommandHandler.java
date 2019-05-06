@@ -828,7 +828,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                     {
                         //plugin.getServer().getPluginManager().disablePlugin(plugin);  
                         //plugin.getServer().getPluginManager().enablePlugin(plugin);
-                        sender.sendMessage(ChatColor.RED + "Not enabled.");
+                        sender.sendMessage(ChatColor.RED + "Command not implemented.");
                         return true;
                     }
                     else if(args[0].equalsIgnoreCase("help")) //Shows all the shop commands
