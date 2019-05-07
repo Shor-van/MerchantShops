@@ -219,7 +219,7 @@ public class MerchantShops extends JavaPlugin
                 merchantSection.set("entity-type", merchant.getEntityType().name().toLowerCase());
             
             //Name
-            merchantSection.set("name", merchant.getMerchantEntity().getCustomName());
+            merchantSection.set("name", merchant.getMerchantName());
     		
             //position
             Location loc = merchant.getLocation();
