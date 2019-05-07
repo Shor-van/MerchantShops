@@ -213,10 +213,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     if(MerchantShops.isValidEntityType(args[3]) == true)
                                     {
                                         EntityType entityType = EntityType.valueOf(args[3].toUpperCase());
+                                        if(merchant.setEntityType(entityType) == false) {
+                                            sender.sendMessage(ChatColor.RED + "failed to change entity type of merchant " + merchantId + " to entity type " + args[3]);
+                                            return true;
+                                        }
                                         
-                                        merchant.setEntityType(entityType);
                                         ((MerchantShops) plugin).saveMerchants();
-                                        
                                         sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " entity type changed to " + ChatColor.AQUA + merchant.getEntityType().toString().toLowerCase() + ChatColor.GOLD + ".");
                                         return true;
                                     }
