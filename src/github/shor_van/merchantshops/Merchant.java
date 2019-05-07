@@ -335,6 +335,11 @@ public class Merchant
      * @return true if the name of the merchant entity was modified else if it failed returns false*/
     public boolean setEntityType(EntityType entityType)
     {
+        //Check if entity type is valid
+        if(MerchantShops.isValidEntityType(entityType.toString()) != true) {
+            Bukkit.getLogger().warning("[Merchant Shops] Tried to set merchant: " + name + " entity type to invalid entity type!"); return false;
+        }
+            
         //Get current entity in the world
         Chunk chunk = null;
         boolean wasUnloaded = false;
@@ -356,13 +361,20 @@ public class Merchant
             Bukkit.getLogger().warning("[Merchant Shops] Merchant entity could not be found while tring to change its entity type, is it dead?"); return false;
         }
         
+        //Spawn new entity
+        UUID newEntityUUID = MerchantShops.spawnMerchantEntity(entityType, this.location, this.name);
+        
+        //Check if entity was spawn successfully if not cancel
+        if(newEntityUUID == null) {
+            Bukkit.getLogger().warning("[Merchant Shops] Failed to spawn new merchant entity for merchant: " + name + " entity type: " + entityType.toString() + "?"); return false;
+        }
+        
+        //Set entity type and data
+        this.entityUUID = newEntityUUID;
+        this.entityType = entityType;
+        
         //Remove entity
         oldEntity.remove();
-        
-        //Spawn new entity
-        
-        //set entity type
-        this.entityType = entityType;
         
         if(wasUnloaded == true)
             chunk.unload(true);

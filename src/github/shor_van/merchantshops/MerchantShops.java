@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -180,9 +181,16 @@ public class MerchantShops extends JavaPlugin
                     loaded++;
                     
                     //Check if we have a duplicate entities
-                    for(Entity entity : Bukkit.getEntity(entityUUID).getNearbyEntities(1, 1, 1))
+                    for(Entity entity : location.getWorld().getNearbyEntities(location, 1, 1, 1))
                         if(entity.getType() == entityType && entity.getCustomName().equals(Bukkit.getEntity(entityUUID).getCustomName()))
                             { entity.remove(); this.getLogger().info("Found duplicate entity for " + merchantEntry + " removing it."); }
+                    
+                    //if failed to spawn entity send error to OPs
+                    if(entityUUID == null)
+                        for(Player player : Bukkit.getOnlinePlayers())
+                            if(player.isOp() == true)
+                                player.sendMessage(ChatColor.GRAY + "[Merchant Shops] " + ChatColor.RED + ChatColor.ITALIC + "Failed to spawn entity: " + entityType.toString() + " for merchant: " + displayName 
+                                        + " at loction X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ());
                 }
                 else
                 {
@@ -271,16 +279,23 @@ public class MerchantShops extends JavaPlugin
      * @param location the location where to spawn the entity
      * @param displayName the display name of the merchant
      * @return the UUID of the entity*/
-    public UUID spawnMerchantEntity(EntityType entityType, Location location, String displayName)
+    public static UUID spawnMerchantEntity(EntityType entityType, Location location, String displayName)
     {
-        Entity merchantEntity = location.getWorld().spawnEntity(location, entityType);
-        
-        merchantEntity.setCustomName(ChatColor.translateAlternateColorCodes('&', displayName));
-        merchantEntity.setCustomNameVisible(true);
-        merchantEntity.setInvulnerable(true);
-        ((LivingEntity) merchantEntity).setAI(false);
-        
-        return merchantEntity.getUniqueId();
+        try
+        {
+            Entity merchantEntity = location.getWorld().spawnEntity(location, entityType);
+            
+            merchantEntity.setCustomName(ChatColor.translateAlternateColorCodes('&', displayName));
+            merchantEntity.setCustomNameVisible(true);
+            merchantEntity.setInvulnerable(true);
+            ((LivingEntity) merchantEntity).setAI(false);
+            
+            return merchantEntity.getUniqueId();
+        }
+        catch(Exception e) {
+            Bukkit.getLogger().severe("[Merchant Shops] Failed to spawn entity: " + entityType.toString() + " for merchant: " + displayName 
+                    + " at loction X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ() + "?"); return null;
+        }
     }
     
     /**Gets the specified merchant

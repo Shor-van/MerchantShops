@@ -93,11 +93,16 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     displayName = args[7].replace("_", " ");
                                 
                                 //create
-                                UUID entityUUID = ((MerchantShops) plugin).spawnMerchantEntity(entityType, location, displayName);
+                                UUID entityUUID = MerchantShops.spawnMerchantEntity(entityType, location, displayName);
                                 ((MerchantShops) plugin).getMerchants().add(new Merchant(entityUUID, entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, new ArrayList<BuyableItem>()));
                                 ((MerchantShops) plugin).saveMerchants();
                                 
                                 sender.sendMessage(ChatColor.GOLD + "New merchant created at X: " + ChatColor.AQUA + location.getX() + ChatColor.GOLD  + " Y: " + ChatColor.AQUA + location.getY() + ChatColor.GOLD + " Z: " + ChatColor.AQUA + location.getZ());
+                                
+                                //If failed to spawn entity
+                                if(entityUUID == null)
+                                    sender.sendMessage(ChatColor.RED + "Failed to spawn the entity" + entityType + " at X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ() + " for the new merchant, is this cause of world guard?");
+                                
                                 return true;
                             }
                             else
@@ -203,7 +208,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                             else if(args[2].equalsIgnoreCase("entitytype")) //Change the merchant's entity type
                             {
-                                sender.sendMessage("NOT IMPLEMENTED");
+                                sender.sendMessage("NOT IMPLEMENTED YET");
                                 return true;
                             }
                             else if(args[2].equalsIgnoreCase("position")) //Change the position of the merchants
