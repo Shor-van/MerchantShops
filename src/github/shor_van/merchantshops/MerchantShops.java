@@ -291,7 +291,8 @@ public class MerchantShops extends JavaPlugin
             merchantEntity.setInvulnerable(true);
             ((LivingEntity) merchantEntity).setAI(false);
             
-            return merchantEntity.getUniqueId();
+            //Check if the entity was spawned and return the UUID
+            return Bukkit.getEntity(merchantEntity.getUniqueId()).getUniqueId();
         }
         catch(Exception e) {
             Bukkit.getLogger().severe("[Merchant Shops] Failed to spawn entity: " + entityType.toString() + " for merchant: " + displayName 
