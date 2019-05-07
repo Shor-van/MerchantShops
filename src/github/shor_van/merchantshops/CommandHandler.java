@@ -212,7 +212,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                 {
                                     if(MerchantShops.isValidEntityType(args[3]) == true)
                                     {
-                                        EntityType entityType = EntityType.valueOf(args[3]);
+                                        EntityType entityType = EntityType.valueOf(args[3].toUpperCase());
                                         
                                         merchant.setEntityType(entityType);
                                         ((MerchantShops) plugin).saveMerchants();
