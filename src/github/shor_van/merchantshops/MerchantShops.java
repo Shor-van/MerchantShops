@@ -176,14 +176,15 @@ public class MerchantShops extends JavaPlugin
                     World world = Bukkit.getWorld(worldName);
                     Location location = new Location(world, posX, posY, posZ, (float)yaw, (float)pitch);
     				
+                    //Check if we have a duplicate entities
+                    for(Entity entity : location.getWorld().getNearbyEntities(location, 1, 1, 1))
+                        if(entity.getType() == entityType && entity.getCustomName().equals(ChatColor.translateAlternateColorCodes('&', displayName)))
+                            { entity.remove(); this.getLogger().info("Found duplicate entity for " + merchantEntry + " removing it."); }
+                    
+                    //Try spawn merchant
                     UUID entityUUID = spawnMerchantEntity(entityType, location, displayName);
                     this.merchants.add(new Merchant(entityUUID, entityType, ChatColor.translateAlternateColorCodes('&', displayName), location, merchantItems));
                     loaded++;
-                    
-                    //Check if we have a duplicate entities
-                    for(Entity entity : location.getWorld().getNearbyEntities(location, 1, 1, 1))
-                        if(entity.getType() == entityType && entity.getCustomName().equals(Bukkit.getEntity(entityUUID).getCustomName()))
-                            { entity.remove(); this.getLogger().info("Found duplicate entity for " + merchantEntry + " removing it."); }
                     
                     //if failed to spawn entity send error to OPs
                     if(entityUUID == null)
