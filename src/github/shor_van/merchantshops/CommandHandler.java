@@ -208,8 +208,29 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                             }
                             else if(args[2].equalsIgnoreCase("entitytype")) //Change the merchant's entity type
                             {
-                                sender.sendMessage("NOT IMPLEMENTED YET");
-                                return true;
+                                if(args.length >= 4)
+                                {
+                                    if(MerchantShops.isValidEntityType(args[3]) == true)
+                                    {
+                                        EntityType entityType = EntityType.valueOf(args[3]);
+                                        
+                                        merchant.setEntityType(entityType);
+                                        ((MerchantShops) plugin).saveMerchants();
+                                        
+                                        sender.sendMessage(ChatColor.GOLD + "Merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " entity type changed to " + ChatColor.AQUA + merchant.getEntityType().toString().toLowerCase() + ChatColor.GOLD + ".");
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        sender.sendMessage(ChatColor.RED + args[3] + " is not a valid entity type");
+                                        return true;
+                                    }
+                                }
+                                else
+                                {
+                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> entityType <entityType>");
+                                    return true;
+                                }
                             }
                             else if(args[2].equalsIgnoreCase("position")) //Change the position of the merchants
                             {

@@ -1,6 +1,6 @@
 name: MerchantShops
 main: github.shor_van.merchantshops.MerchantShops
-version: 1.2.2 b104 (1.14)
+version: 1.2.3 b105 (1.14)
 api-version: 1.14
 commands:
     shop:
