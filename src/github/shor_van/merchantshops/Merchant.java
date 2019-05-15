@@ -18,7 +18,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**Represents a merchant*/
 public class Merchant
@@ -116,7 +119,7 @@ public class Merchant
             BuyableItem buyableItem = sellItems.get(i);
     		
             //Check if item has invalid data
-            if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null || buyableItem.getAmount() <= 0 || buyableItem.getLevelCost() <= 0 || buyableItem.hasInvalidEnchants() == true)
+            if(Material.getMaterial(buyableItem.getItemKey().toUpperCase()) == null || buyableItem.getAmount() <= 0 || buyableItem.getLevelCost() <= 0 || buyableItem.hasInvalidEffects() == true || buyableItem.hasInvalidEnchants() == true)
             {
                 Bukkit.getLogger().warning("[MerchantShops] Item: " + buyableItem.getItemKey() + " IDX:" + i + " solded by merchant: " + name + " has invalid data!");
                 
@@ -136,6 +139,21 @@ public class Merchant
                     errLore.add("amount: " + ChatColor.RED + buyableItem.getAmount() + ChatColor.DARK_PURPLE + " should be greater then zero.");
                 if(buyableItem.getLevelCost() <= 0)
                     errLore.add("level cost: " + ChatColor.RED + buyableItem.getLevelCost() + ChatColor.DARK_PURPLE + " should be greater then zero.");
+                
+                //potion effects if has any
+                if(buyableItem.getEffects() != null)
+                {
+                    for(String effect : buyableItem.getEffects())
+                    {
+                        String[] effectData = effect.split(" ");
+                        if(PotionEffectType.getByName(effectData[0].toUpperCase()) == null)
+                            errLore.add("effect: " + ChatColor.RED + effectData[0] + ChatColor.DARK_PURPLE + " is not a valid potion effect");
+                        if(MerchantShops.isInteger(effectData[1]) == false)
+                            errLore.add("level: " + ChatColor.RED + effectData[1] + ChatColor.DARK_PURPLE + " for effect: " + ChatColor.RED + effectData[0] + ChatColor.DARK_PURPLE + " is NaN.");
+                        if(MerchantShops.isInteger(effectData[2]) == false)
+                            errLore.add("duration: " + ChatColor.RED + effectData[2] + ChatColor.DARK_PURPLE + " for effect: " + ChatColor.RED + effectData[0] + ChatColor.DARK_PURPLE + " is NaN.");
+                    }
+                }
                 
                 //Enchant data if has any
                 if(buyableItem.getEnchants() != null)
@@ -197,6 +215,23 @@ public class Merchant
             
             meta.setLore(lore);
     		
+            //if potion effects
+            if(buyableItem.getEffects() != null)
+            {
+                if(item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)
+                {
+                    PotionMeta potMeta = (PotionMeta)meta;
+                    for(String effect : buyableItem.getEffects())
+                    {
+                        String[] effectData = effect.split(" ");
+                        int level = Integer.parseInt(effectData[1]);
+                        int duration = Integer.parseInt(effectData[2]);
+                        
+                        potMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(effectData[0]), duration, level), true);
+                    }
+                }
+            }
+            
             //set meta
             item.setItemMeta(meta);
     		
@@ -219,6 +254,7 @@ public class Merchant
                     }
                 }
             }
+            
             buyMenu.setItem(buyMenu.firstEmpty(), item);
         }
     	

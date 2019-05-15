@@ -163,6 +163,9 @@ public class MerchantShops extends JavaPlugin
                             if(itemData.contains("enchants", true))
                                 buyableItem.setEnchants((List<String>)itemData.getList("enchants"));
     						
+                            if(itemData.contains("effects", true))
+                                buyableItem.setEffects((List<String>)itemData.getList("effects"));
+                            
                             merchantItems.add(buyableItem);
                         }
                         else
@@ -270,6 +273,10 @@ public class MerchantShops extends JavaPlugin
                 //enchants if has
                 if(buyableItem.getEnchants() != null)
                     itemSection.set("enchants", buyableItem.getEnchants());
+                
+                //potion effects if has
+                if(buyableItem.getEffects() != null)
+                    itemSection.set("effects", buyableItem.getEffects());
             }
         }
         this.saveConfig();

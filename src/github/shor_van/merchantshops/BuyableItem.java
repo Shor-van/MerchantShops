@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.potion.PotionEffectType;
 
 /**Represents a item that is sold by a merchant*/
 public class BuyableItem
@@ -20,6 +21,7 @@ public class BuyableItem
     private String skullTexture; //Base64 string of the texture used by the skull
     private List<String> lore; //A list of the item's lore
     private List<String> enchants; //A list of the item's enchants
+    private List<String> potEffects; //A list of potion effects
     
     /**Creates a new instance of BuyableItem
      * @param itemKey the namespace key of the item
@@ -40,20 +42,7 @@ public class BuyableItem
         this.skullTexture = null;
         this.lore = null;
         this.enchants = null;
-    }
-    
-    /**Gets the index of the enchantment in the item's enchants list 
-     * @param enchantKey the namespace key of the enchantment
-     * @return the index of the enchant in the list, -1 if the item does not have the enchant*/
-    public int getEnchantIndex(String enchantKey)
-    {
-        if(enchants == null)
-            return -1;
-        
-        for(int i = 0; i < enchants.size(); i++)
-            if(enchants.get(i).split(" ")[0].toLowerCase().equals(enchantKey.toLowerCase()))
-                return i;
-        return -1;
+        this.potEffects = null;
     }
     
     /**Checks if the enchantment is in the item's enchants list 
@@ -70,56 +59,18 @@ public class BuyableItem
         return false;
     }
     
-    /**Sets the level of the enchantment at the specified index 
-     * @param index the index of enchantment of the level to set
-     * @param level the level to set*/
-    public void setEnchantLevel(int index, int level)
-    {
-        if(enchants == null)
-            throw new IllegalStateException("This item does not have any enchants!");
-            
-        if(index < 0 || index >= enchants.size())
-            throw new IllegalArgumentException("The index is out of range of the enchants list!");
-        
-        String enchantKey = enchants.get(index).split(" ")[0];
-        enchants.set(index, enchantKey + " " + level);
-    }
-    
-    /**removes the specified enchant from the enchants list 
-     * @param index the index of enchantment to remove*/
-    public void removeEnchant(int index)
-    {
-        if(enchants == null)
-            throw new IllegalStateException("This item does not have any enchants!");
-        
-        if(index < 0 || index >= enchants.size())
-            throw new IllegalArgumentException("The index is out of range in the enchants list!");
-        
-        enchants.remove(index);
-        
-        if(enchants.size() == 0)
-            enchants = null;
-    }
-    
-    /**Adds the specified enchant to the item's enchants list
+    /**Gets the index of the enchantment in the item's enchants list 
      * @param enchantKey the namespace key of the enchantment
-     * @param level the level of the enchantment*/
-    public void addEnchant(String enchantKey, int level) 
+     * @return the index of the enchant in the list, -1 if the item does not have the enchant*/
+    public int getEnchantIndex(String enchantKey)
     {
         if(enchants == null)
-            enchants = new ArrayList<>();
+            return -1;
         
-        enchants.add(enchantKey + " " + level); 
-    }
-    
-    /**Removes all the item's enchants*/
-    public void removeEnchants()
-    {
-        if(enchants != null)
-        {
-            enchants.clear();
-            enchants = null;
-        }
+        for(int i = 0; i < enchants.size(); i++)
+            if(enchants.get(i).split(" ")[0].toLowerCase().equals(enchantKey.toLowerCase()))
+                return i;
+        return -1;
     }
     
     /**Checks if the enchantment data that the item has is invalid
@@ -138,6 +89,174 @@ public class BuyableItem
                 return true;
         }
         return false;
+    }
+    
+    /**Sets the level of the enchantment at the specified index 
+     * @param index the index of enchantment of the level to set
+     * @param level the level to set*/
+    public void setEnchantLevel(int index, int level)
+    {
+        if(enchants == null)
+            throw new IllegalStateException("This item does not have any enchants!");
+            
+        if(index < 0 || index >= enchants.size())
+            throw new IllegalArgumentException("The index is out of range of the enchants list!");
+        
+        String enchantKey = enchants.get(index).split(" ")[0];
+        enchants.set(index, enchantKey + " " + level);
+    }
+    
+    /**Adds the specified enchant to the item's enchants list
+     * @param enchantKey the namespace key of the enchantment
+     * @param level the level of the enchantment*/
+    public void addEnchant(String enchantKey, int level) 
+    {
+        if(enchants == null)
+            enchants = new ArrayList<>();
+        
+        enchants.add(enchantKey + " " + level); 
+    }
+    
+    /**removes the specified enchant from the enchants list 
+     * @param index the index of enchantment to remove*/
+    public void removeEnchant(int index)
+    {
+        if(enchants == null)
+            throw new IllegalStateException("This item does not have any enchants!");
+        
+        if(index < 0 || index >= enchants.size())
+            throw new IllegalArgumentException("The index is out of range in the enchants list!");
+        
+        enchants.remove(index);
+        
+        if(enchants.size() == 0)
+            enchants = null;
+    }
+    
+    /**Removes all the item's enchants*/
+    public void removeEnchants()
+    {
+        if(enchants != null)
+        {
+            enchants.clear();
+            enchants = null;
+        }
+    }
+    
+    /**Checks if the effect is in the item's effect list 
+     * @param effectKey the namespace key of the effect
+     * @return true if the item has the effect else false*/
+    public boolean hasEffect(String effectKey)
+    {
+        if(potEffects == null)
+            return false;
+        
+        for(String effect : potEffects)
+            if(effect.split(" ")[0].toLowerCase().equals(effectKey.toLowerCase()))
+                return true;
+        return false;
+    }
+    
+    /**Gets the index of the effect in the item's enchants list 
+     * @param effectKey the namespace key of the effect
+     * @return the index of the effect in the list, -1 if the item does not have the effect*/
+    public int getEffectIndex(String effectKey)
+    {
+        if(potEffects == null)
+            return -1;
+        
+        for(int i = 0; i < potEffects.size(); i++)
+            if(potEffects.get(i).split(" ")[0].toLowerCase().equals(effectKey.toLowerCase()))
+                return i;
+        return -1;
+    }
+    
+    /**Checks if the potion effect data that the item has is invalid
+     * @return true if the item has invalid effect data, false if all data is valid*/
+    public boolean hasInvalidEffects()
+    {
+        if(potEffects == null)
+            return false;
+        
+        for(String effect : potEffects)
+        {
+            String[] effectData = effect.split(" ");
+            if(PotionEffectType.getByName(effectData[0].toUpperCase()) == null)
+                return true;
+            else if(MerchantShops.isInteger(effectData[1]) == false)
+                return true;
+            else if(MerchantShops.isInteger(effectData[2]) == false)
+                return true;
+        }
+        return false;
+    }
+    
+    /**Sets the level of the potion effect at the specified index 
+     * @param index the index of effect
+     * @param level the level to set*/
+    public void setEffectLevel(int index, int level)
+    {
+        if(potEffects == null)
+            throw new IllegalStateException("This item does not have any effects!");
+        
+        if(index < 0 || index >= potEffects.size())
+            throw new IllegalArgumentException("The index is out of range in the effects list!");
+        
+        String[] effectData = potEffects.get(index).split(" ");
+        potEffects.set(index, effectData[0] + level + effectData[2]);
+    }
+    
+    /**Sets the duration of the potion effect at the specified index 
+     * @param index the index of effect
+     * @param duration the duration to set*/
+    public void setEffectDuration(int index, int duration)
+    {
+        if(potEffects == null)
+            throw new IllegalStateException("This item does not have any effects!");
+        
+        if(index < 0 || index >= potEffects.size())
+            throw new IllegalArgumentException("The index is out of range in the effects list!");
+     
+        String[] effectData = potEffects.get(index).split(" ");
+        potEffects.set(index, effectData[0] + effectData[1] + duration);
+    }
+    
+    /**Adds the specified potion effect to the item's effects list
+     * @param potEffectKey the namespace key of the effect
+     * @param level the level of the effect
+     * @param duration the duration of the effect*/
+    public void addEffect(String potEffectKey, int level, int duration)
+    {
+        if(potEffects == null)
+            potEffects = new ArrayList<>();
+        
+        potEffects.add(potEffectKey + " " + level + " " + duration);
+    }
+    
+    /**removes the specified effect from the effects list 
+     * @param index the index of potion effect to remove*/
+    public void removeEffect(int index)
+    {
+        if(potEffects == null)
+            throw new IllegalStateException("This item does not have any effects!");
+        
+        if(index < 0 || index >= potEffects.size())
+            throw new IllegalArgumentException("The index is out of range in the effects list!");
+        
+        potEffects.remove(index);
+        
+        if(potEffects.size() == 0)
+            potEffects = null;
+    }
+    
+    /**Removes all the item's potion effects*/
+    public void removeEffects()
+    {
+        if(potEffects != null)
+        {
+            potEffects.clear();
+            potEffects = null;
+        }
     }
     
     /**Adds a list of strings to the item's lore, each entry in the list is a different line of lore
@@ -161,7 +280,7 @@ public class BuyableItem
     }
     
     /**Removes all the item's lore*/
-    public void removeLore() 
+    public void removeLore()
     { 
         if(lore != null)
         {
@@ -214,6 +333,10 @@ public class BuyableItem
      * @param enchants a list of strings containing the enchants*/
     public void setEnchants(List<String> enchants) { this.enchants = enchants; } 
     
+    /**Sets the item's potion effects
+     * @param effects a list of strings containing the potion effect data*/
+    public void setEffects(List<String> effects) { this.potEffects = effects; }
+    
     /**Gets the namespace key of the item
      * @return the namespace key of the item*/
     public String getItemKey() { return itemKey; }
@@ -257,4 +380,8 @@ public class BuyableItem
     /**Gets a list of the items enchants, enchantment type and level are seperated by space EG: "sharpness 5"
      * @return a list containing the item's enchants*/
     public List<String> getEnchants() { return enchants; }
+    
+    /**Gets a list of the item's potion effects, effect type, level and duration are seperated by space EG: "regeneration 2 165"
+     * @return a list containing the item's enchants*/
+    public List<String> getEffects() { return potEffects; }
 }

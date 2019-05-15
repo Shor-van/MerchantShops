@@ -19,8 +19,11 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**Listens for game events to trigger*/
 public class EventListener implements Listener
@@ -139,6 +142,23 @@ public class EventListener implements Listener
                                     for(String line : buyableItem.getLore())
                                         lore.add(ChatColor.translateAlternateColorCodes('&', line));
                                 meta.setLore(lore);
+                                
+                                //if has potion effects
+                                if(buyableItem.getEffects() != null)
+                                {
+                                    if(item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)
+                                    {
+                                        PotionMeta potMeta = (PotionMeta)meta;
+                                        for(String effect : buyableItem.getEffects())
+                                        {
+                                            String[] effectData = effect.split(" ");
+                                            int level = Integer.parseInt(effectData[1]);
+                                            int duration = Integer.parseInt(effectData[2]);
+                                            
+                                            potMeta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(effectData[0]), duration, level), true);
+                                        }
+                                    }
+                                }
                                 
                                 //set meta
                                 item.setItemMeta(meta);

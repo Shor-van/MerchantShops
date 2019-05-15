@@ -28,6 +28,8 @@ shops-data:
                     - "unbreaking 8246"
                     - "mending 8246"
                     - "vanishing_curse 8246"
+                effects:
+                    - "reganeration 4 2"
             item-1:
                 item-key: trident
                 damage: 0

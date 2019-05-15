@@ -17,6 +17,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 
 /**Handles the /shop command for the merchant shops plugin*/
 public class CommandHandler implements CommandExecutor, TabCompleter
@@ -668,6 +669,160 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                             return true;
                                         }
                                     }
+                                    else if(args[4].equalsIgnoreCase("effects")) //Change the effects of the specified item
+                                    {
+                                        if(args.length >= 6)
+                                        {
+                                            if(args[5].equalsIgnoreCase("add")) //add the specified effect to the item
+                                            {
+                                                if(args.length >= 7)
+                                                {
+                                                    int level = 1;
+                                                    int duration = 600;
+                                                    String effectKey = args[6];
+                                                    if(buyableItem.hasEffect(effectKey) == false)
+                                                    {
+                                                        //Specified a level
+                                                        if(args.length >= 8)
+                                                        {
+                                                            try 
+                                                            { level = Integer.parseInt(args[7]); } 
+                                                            catch(NumberFormatException e) {
+                                                                sender.sendMessage(ChatColor.RED + args[7] + " is not a valid number!");
+                                                                return true;
+                                                            }
+                                                        }
+                                                        
+                                                        //Specified duration
+                                                        if(args.length >= 9)
+                                                        {
+                                                            try 
+                                                            { duration = Integer.parseInt(args[8]); } 
+                                                            catch(NumberFormatException e) {
+                                                                sender.sendMessage(ChatColor.RED + args[7] + " is not a valid number!");
+                                                                return true;
+                                                            }
+                                                        }
+                                                        
+                                                        buyableItem.addEffect(effectKey, level, duration);
+                                                        ((MerchantShops) plugin).saveMerchants();
+                                                        
+                                                        sender.sendMessage(ChatColor.GOLD + "Effect: " + ChatColor.AQUA + effectKey + ChatColor.GOLD + " has been added to item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId);
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        sender.sendMessage(ChatColor.RED + "Item: " + itemId + " already has the " + effectKey + " potion effect!");
+                                                        return true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> effects add <effectKey> [level] [duration]");
+                                                    return true;
+                                                }
+                                            }
+                                            else if(args[5].equalsIgnoreCase("remove")) //remove the specified effect from the item
+                                            {
+                                                if(args.length >= 7)
+                                                {
+                                                    String effectKey = args[6];
+                                                    int idx = buyableItem.getEffectIndex(effectKey);
+                                                    if(idx != -1)
+                                                    {
+                                                        buyableItem.removeEffect(idx);
+                                                        ((MerchantShops) plugin).saveMerchants();
+                                                        
+                                                        sender.sendMessage(ChatColor.GOLD + "Effect: " + ChatColor.AQUA + effectKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " has been removed");
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        sender.sendMessage(ChatColor.RED + "Item: " + itemId + " does not have the " + effectKey + " potion effect!");
+                                                        return true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> effects remove <effectKey>");
+                                                    return true;
+                                                }
+                                            }
+                                            else if(args[5].equalsIgnoreCase("setlevel")) //change the level of the effect
+                                            {
+                                                if(args.length >= 8)
+                                                {
+                                                    int level = 0;
+                                                    String effectKey = args[6];
+                                                    int idx = buyableItem.getEffectIndex(effectKey);
+                                                    if(idx != -1)
+                                                    {
+                                                        try 
+                                                        { level = Integer.parseInt(args[7]); } 
+                                                        catch(NumberFormatException e) {
+                                                            sender.sendMessage(ChatColor.RED + args[7] + " is not a valid number!");
+                                                            return true;
+                                                        }
+                                                        
+                                                        buyableItem.setEffectLevel(idx, level);
+                                                        ((MerchantShops) plugin).saveMerchants();
+                                                        
+                                                        sender.sendMessage(ChatColor.GOLD + "Effect: " + ChatColor.AQUA + effectKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " level set to " + ChatColor.AQUA + level);
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        sender.sendMessage(ChatColor.RED + "Item: " + itemId + " does not have the " + effectKey + " potion effect!");
+                                                        return true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> effects setlevel <effectKey> <level>");
+                                                    return true;
+                                                }
+                                            }
+                                            else if(args[5].equalsIgnoreCase("setduration")) //change the duration of the effect
+                                            {
+                                                if(args.length >= 8)
+                                                {
+                                                    int duration = 0;
+                                                    String effectKey = args[6];
+                                                    int idx = buyableItem.getEffectIndex(effectKey);
+                                                    if(idx != -1)
+                                                    {
+                                                        try 
+                                                        { duration = Integer.parseInt(args[7]); } 
+                                                        catch(NumberFormatException e) {
+                                                            sender.sendMessage(ChatColor.RED + args[7] + " is not a valid number!");
+                                                            return true;
+                                                        }
+                                                        
+                                                        buyableItem.setEffectDuration(idx, duration);
+                                                        ((MerchantShops) plugin).saveMerchants();
+                                                        
+                                                        sender.sendMessage(ChatColor.GOLD + "Effect: " + ChatColor.AQUA + effectKey + ChatColor.GOLD + " of item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId + ChatColor.GOLD + " duration set to " + ChatColor.AQUA + duration);
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        sender.sendMessage(ChatColor.RED + "Item: " + itemId + " does not have the " + effectKey + " potion effect!");
+                                                        return true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> effects setduration <effectKey> <duration>");
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            sender.sendMessage(ChatColor.AQUA + "Usage: /shop merchant <id> edititem <id> effects <add/remove|setlevel|setduration>");
+                                            return true;
+                                        }
+                                    }
                                     else if(args[4].equalsIgnoreCase("enchants")) //Change the enchantments of the specified item
                                     {
                                         if(args.length >= 6)
@@ -685,8 +840,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                         {
                                                             try 
                                                             { level = Integer.parseInt(args[7]); } 
-                                                            catch(NumberFormatException e) 
-                                                            {
+                                                            catch(NumberFormatException e)  {
                                                                 sender.sendMessage(ChatColor.RED + args[7] + " is not a valid number!");
                                                                 return true;
                                                             }
@@ -695,7 +849,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                                         buyableItem.addEnchant(enchantKey, level);
                                                         ((MerchantShops) plugin).saveMerchants();
                                                             
-                                                        sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " has been to item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId);
+                                                        sender.sendMessage(ChatColor.GOLD + "Enchant: " + ChatColor.AQUA + enchantKey + ChatColor.GOLD + " has been added to item: " + ChatColor.AQUA + itemId + ChatColor.GOLD + " sold by merchant: " + ChatColor.AQUA + merchantId);
                                                         return true;
                                                     }
                                                     else
@@ -1173,6 +1327,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     options.add("skulltexture");
                                 if("lore".startsWith(args[4].toLowerCase()))
                                     options.add("lore");
+                                if("effects".startsWith(args[4].toLowerCase()))
+                                    options.add("effects");
                                 if("enchants".startsWith(args[4].toLowerCase()))
                                     options.add("enchants");
                             }
@@ -1188,6 +1344,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                     options.add("skullowner");
                                     options.add("skulltexture");
                                     options.add("lore");
+                                    options.add("effects");
                                     options.add("enchants");
                             }
                         }
@@ -1211,6 +1368,45 @@ public class CommandHandler implements CommandExecutor, TabCompleter
                                         for(Material material : Material.values())
                                             if(material.name().startsWith("LEGACY_") == false)                                      
                                                 options.add(material.name().toLowerCase());
+                                    }
+                                }
+                            }
+                            else if(args[4].equalsIgnoreCase("effects"))
+                            {
+                                if(args.length == 6)
+                                {
+                                    if(args[5].isEmpty() == false)
+                                    {
+                                        if("add".startsWith(args[5].toLowerCase()))
+                                            options.add("add");
+                                        if("remove".startsWith(args[5].toLowerCase()))
+                                            options.add("remove");
+                                        if("setlevel".startsWith(args[5].toLowerCase()))
+                                            options.add("setlevel");
+                                        if("setduration".startsWith(args[5].toLowerCase()))
+                                            options.add("setduration");
+                                    }
+                                    else
+                                    {
+                                        options.add("add");
+                                        options.add("remove");                                   
+                                        options.add("setlevel");
+                                        options.add("setduration");
+                                    }
+                                }
+                                
+                                if(args.length == 7)
+                                {
+                                    if(args[6].isEmpty() == false)
+                                    {
+                                        for(PotionEffectType effect : PotionEffectType.values())
+                                            if(effect.getName().toLowerCase().startsWith(args[6].toLowerCase()))
+                                                options.add(effect.getName().toLowerCase());
+                                    }
+                                    else
+                                    {
+                                        for(PotionEffectType effect : PotionEffectType.values())
+                                            options.add(effect.getName().toLowerCase());
                                     }
                                 }
                             }
