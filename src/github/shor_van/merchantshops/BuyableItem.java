@@ -203,7 +203,7 @@ public class BuyableItem
             throw new IllegalArgumentException("The index is out of range in the effects list!");
         
         String[] effectData = potEffects.get(index).split(" ");
-        potEffects.set(index, effectData[0] + level + effectData[2]);
+        potEffects.set(index, effectData[0] + " " + level + " " + effectData[2]);
     }
     
     /**Sets the duration of the potion effect at the specified index 
@@ -218,7 +218,7 @@ public class BuyableItem
             throw new IllegalArgumentException("The index is out of range in the effects list!");
      
         String[] effectData = potEffects.get(index).split(" ");
-        potEffects.set(index, effectData[0] + effectData[1] + duration);
+        potEffects.set(index, effectData[0] + " " + effectData[1] + " " + duration);
     }
     
     /**Adds the specified potion effect to the item's effects list
