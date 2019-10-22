@@ -177,6 +177,11 @@ public class MerchantShops extends JavaPlugin
     				
                     //create merchant
                     World world = Bukkit.getWorld(worldName);
+                    
+                    //check if world exists
+                    if(world == null)
+                    { this.getLogger().warning("World: " + worldName + " does not seem to exists for merchant: " + merchantEntry); continue;}
+                        
                     Location location = new Location(world, posX, posY, posZ, (float)yaw, (float)pitch);
     				
                     //Check if we have a duplicate entities
